@@ -1,0 +1,12 @@
+
+[build] loading fasta file /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38/gencode/gencode.v24.transcripts.fa.gz
+[build] k-mer length: 31
+[build] warning: clipped off poly-A tail (longer than 10)
+        from 1540 target sequences
+[build] warning: replaced 86 non-ACGUT characters in the input sequence
+        with pseudorandom nucleotides
+[build] counting k-mers ... done.
+[build] building target de Bruijn graph ...  done 
+[build] creating equivalence classes ...  done
+[build] target de Bruijn graph has 1261049 contigs and contains 123898639 k-mers 
+

@@ -1,0 +1,10 @@
+
+[build] loading fasta file /users/GR/mb/jquilez/assemblies/homo_sapiens/hg19/ucsc/hg19_ensGene.fa.gz
+[build] k-mer length: 31
+[build] warning: clipped off poly-A tail (longer than 10)
+        from 1539 target sequences
+[build] counting k-mers ... done.
+[build] building target de Bruijn graph ...  done 
+[build] creating equivalence classes ...  done
+[build] target de Bruijn graph has 1194333 contigs and contains 116866417 k-mers 
+

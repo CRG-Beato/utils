@@ -1,0 +1,10 @@
+Welcome to GEM-indexer build 1.843 (beta) - (2013-07-06 15:24:46 GMT)
+ (c) 2008-2013 Paolo Ribeca <paolo.ribeca@gmail.com>
+ (c) 2010-2013 Santiago Marco Sola <santiagomsola@gmail.com>
+ (c) 2010-2013 Leonor Frias Moya <leonor.frias@gmail.com>
+For the terms of use, run the program with the option --show-license.
+************************************************************************
+* WARNING: this is a beta version, provided for testing purposes only; *
+*          check for updates at <http://gemlibrary.sourceforge.net>.   *
+************************************************************************
+Fatal error: exception Failure("Command 'echo "-------gem-indexer_fasta2meta+cont" > /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38_mmtv/ucsc/hg38_mmtv.gem.log && gem-indexer_fasta2meta+cont -i /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38_mmtv/ucsc/hg38_mmtv.fa -c dna -

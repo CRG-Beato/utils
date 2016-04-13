@@ -4,7 +4,7 @@
 
 #==================================================================================================
 # Created on: 2016-02-05
-# Usage: ./update_metadata.py <database> <mode>
+# Usage: ./io_metadata.py <database> <mode>
 # Author: javier.quilez@crg.eu
 # Goal: update metadata
 #==================================================================================================
@@ -72,7 +72,7 @@ elif mode == "get_from_metadata":
 	table = sys.argv[3]
 	sample_id = sys.argv[4]
 	attribute = sys.argv[5]
-	print metadata, mode, table, sample_id, attribute
+	print metadata, mode, table, sample_id#, attribute
 	# load table, select sample and print attribute
 	tab = db.load_table(table)
 	my_sample = tab.find(SAMPLE_ID = sample_id)
@@ -96,8 +96,5 @@ elif mode == "add_to_metadata":
 	tab = db.get_table(table, primary_id = 'JOB_ID', primary_type = 'String')
  	new_data = {}
  	new_data['JOB_ID'] = my_key
- 	#new_data['SAMPLE_ID'] = sample_id
- 	#new_data['TIME_STAMP'] = time_stamp
- 	#new_data['RUN'] = job
  	new_data[attribute] = value
  	tab.upsert(new_data, ['JOB_ID'])

@@ -15,8 +15,8 @@
 #==================================================================================================
 
 # variables 
-run_id=MB14_Fcs_HiC_TFIIIC_28012016
-release_date=2016-01-28
+run_id=160409_NS500645_0048_AHCFNFAFXX_RUN45MM3
+release_date=2016-04-09
 scp=`which scp`
 project=4DGenome
 data_type=''

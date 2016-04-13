@@ -15,11 +15,11 @@
 #==================================================================================================
 
 # variables
-analysis=2016-03-01_run_chipseq_pipeline
-download_date=2016-03-01
+analysis=2016-03-16_run_pipeline_Yannick_Spill
+download_date=2016-03-16
 process=fastq_dump_from_sra
-project='dbau'
-data_type='atacseq'
+project='4DGenome'
+data_type='hic'
 
 # paths
 if [[ $project == '4DGenome' ]]; then

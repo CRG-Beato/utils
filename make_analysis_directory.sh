@@ -31,8 +31,7 @@ if [[ $project == "4DGenome" ]]; then
 	echo "# $directory_name" >> $md
 	echo `printf '%100s\n' | tr ' ' -` >> $md
 	echo -e "\n**objective: ...**" >> $md
-	echo -e "\n**HOME=/users/GR/mb/jquilez**" >> $md
-	echo -e "**PROJECT=/users/projects/4DGenome**\n\n" >> $md
+	echo -e "\n**paths are relative to /users/projects/4DGenome**\n\n" >> $md
 else
 	ANALYSIS=/users/GR/mb/jquilez/projects/$project/analysis/${my_date}_${analysis}
 	mkdir -p $ANALYSIS/{scripts,tables,figures,data}

@@ -2,18 +2,12 @@
 
 
 #==================================================================================================
-# Created on: 2016-02-08
-# Usage: ./quality_control.sh
+# Created on: 2016-04-08
+# Usage: ./combine_fastqs.sh
 # Author: Javier Quilez (GitHub: jaquol)
-# Goal: perform quality control of raw reads before mapping using FastQC
+# Goal: bcl2fastq conversion produces, for each sample, as many FASTQs as lanes, so we need to
+# combine them to have one FASTQ per sample
 #==================================================================================================
-
-# workflow
-# samples, location/type of input data, location output data/log files, cluster options
-# are specified in the 'configuration variables and paths' --review before execution of the script!
-# if integrate_metadata='yes':
-# (1) metadata is downloaded
-# (2) the FastQC output is parsed to extract metadata which is added to the database
 
 
 
@@ -22,45 +16,32 @@
 #==================================================================================================
 
 # variables
-samples="eaed0e91e_467f847a2 dc3a1e069_467f847a2 a1e46328c_467f847a2 9a7c4a68d_467f847a2 e4aa8d54f_467f847a2 f63c93d81_467f847a2"
-process=quality_control
+samples="e22e868a9_d222de8ea e22e868a9_869faec68 e22e868a9_6bddf5c69 8d2ac542f_d222de8ea"
+process=combine_fastqs
 project=4DGenome
-release_date=2016-03-17
-data_type=hic
-analysis=2016-04-13_run_hic-16.03_sequencing_2016-03-17
+release_date=2016-04-09
+data_type=''
+analysis=2016-04-13_run_hic-16.03_sequencing_2016-04-09
 sequencing_type="PE"
-integrate_metadata="yes"
 
 # paths
 if [[ $project == "4DGenome" ]]; then
 	IODIR=/users/project/4DGenome/sequencing/$release_date
 	ANALYSIS=/users/project/4DGenome/analysis/$analysis
-	io_metadata=/users/project/4DGenome/utils/io_metadata.sh
 else
 	IODIR=/users/GR/mb/jquilez/data/$data_type/raw/$release_date
 	ANALYSIS=/users/GR/mb/jquilez/projects/$project/analysis/$analysis	
-	io_metadata=/users/GR/mb/jquilez/utils/io_metadata.sh
 fi
-FASTQC=$IODIR/fastqc
 JOB_CMD=$ANALYSIS/job_cmd
 JOB_OUT=$ANALYSIS/job_out
-mkdir -p $FASTQC
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
-fastqc=/users/GR/mb/jquilez/software/FastQC/fastqc
-unzip=`which unzip`
 
 # Cluster parameters
 queue=short-sl65
 memory=10G
 max_time=06:00:00
 slots=1
-
-# download metadata and update database
-if [[ $integrate_metadata == 'yes' ]]; then
-	$io_metadata -m download_input_metadata
-fi
-
 
 
 #==================================================================================================
@@ -86,19 +67,15 @@ for s in $samples; do
 	#$ -pe smp $slots" > $job_file
 	sed -i 's/^\t//g' $job_file
 
-	# FastQC
-	job_cmd="$fastqc --extract $IODIR/${s}*read1.fastq.gz -o $FASTQC; rm -f $FASTQC/${s}*read1_fastqc.zip"
+	# combine the multiple FASTQ files per sample (1 for each lane) into a single sample FASTQ
+	old_s=`echo $s | sed "s/_/-/g"`
+	job_cmd="cat `ls $IODIR/$old_s*R1*` > $IODIR/${s}_read1.fastq.gz"
 	echo $job_cmd >> $job_file
 	if [[ $sequencing_type == "PE" ]]; then
-		job_cmd="$fastqc --extract $IODIR/${s}*read2.fastq.gz -o $FASTQC; rm -f $FASTQC/${s}*read2_fastqc.zip"
+		job_cmd="cat `ls $IODIR/$old_s*R2*` > $IODIR/${s}_read2.fastq.gz"
 		echo $job_cmd >> $job_file
 	fi
-
-	# add to metadata
-	if [[ $integrate_metadata == 'yes' ]]; then
-		job_cmd="$io_metadata -m quality_control_raw_reads -s $s -p $sequencing_type"
-		echo $job_cmd >> $job_file
-	fi
+	echo "rm -fr $IODIR/$old_s*" >> $job_file
 
 	# Submit job
 	chmod a+x $job_file

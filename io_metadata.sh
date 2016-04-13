@@ -3,7 +3,7 @@
 
 #==================================================================================================
 # Created on: 2016-02-05
-# Usage: ./update_metadata.sh <mode> <sample_id>
+# Usage: ./io_metadata.sh <mode> <sample_id>
 # Author: javier.quilez@crg.eu
 # Goal: add/get metadata from a database
 #==================================================================================================
@@ -150,7 +150,7 @@ quality_control_raw_reads() {
 	# check that both read length from the input metadata agrees with the actual read length
 	# or update otherwise
 	read_length_from_fastqc=`grep "Sequence length" $fastqc_data | cut -f2`
-	read_length_from_metadata=`get_from_metadata input_metadata 'SEQUENCING_READ_LENGTH'`
+	read_length_from_metadata=`python $io_metadata $db 'get_from_metadata' 'input_metadata' $sample_id 'SEQUENCING_READ_LENGTH'`
 	python $io_metadata $db quality_control_raw_reads $sample_id "${which_read^^}_SEQUENCING_READ_LENGTH" $read_length_from_fastqc
 	if [[ $read_length_from_fastqc != $read_length_from_metadata ]]; then
 		message_info "read length from the input metadata does not agrees with the actual read length for $which_read"

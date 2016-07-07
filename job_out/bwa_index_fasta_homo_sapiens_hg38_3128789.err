@@ -1,0 +1,78 @@
+[bwa_index] Pack FASTA... 30.24 sec
+[bwa_index] Construct BWT for the packed sequence...
+[BWTIncCreate] textLength=6185543820, availableWord=447237476
+[BWTIncConstructFromPacked] 10 iterations done. 99999996 characters processed.
+[BWTIncConstructFromPacked] 20 iterations done. 199999996 characters processed.
+[BWTIncConstructFromPacked] 30 iterations done. 299999996 characters processed.
+[BWTIncConstructFromPacked] 40 iterations done. 399999996 characters processed.
+[BWTIncConstructFromPacked] 50 iterations done. 499999996 characters processed.
+[BWTIncConstructFromPacked] 60 iterations done. 599999996 characters processed.
+[BWTIncConstructFromPacked] 70 iterations done. 699999996 characters processed.
+[BWTIncConstructFromPacked] 80 iterations done. 799999996 characters processed.
+[BWTIncConstructFromPacked] 90 iterations done. 899999996 characters processed.
+[BWTIncConstructFromPacked] 100 iterations done. 999999996 characters processed.
+[BWTIncConstructFromPacked] 110 iterations done. 1099999996 characters processed.
+[BWTIncConstructFromPacked] 120 iterations done. 1199999996 characters processed.
+[BWTIncConstructFromPacked] 130 iterations done. 1299999996 characters processed.
+[BWTIncConstructFromPacked] 140 iterations done. 1399999996 characters processed.
+[BWTIncConstructFromPacked] 150 iterations done. 1499999996 characters processed.
+[BWTIncConstructFromPacked] 160 iterations done. 1599999996 characters processed.
+[BWTIncConstructFromPacked] 170 iterations done. 1699999996 characters processed.
+[BWTIncConstructFromPacked] 180 iterations done. 1799999996 characters processed.
+[BWTIncConstructFromPacked] 190 iterations done. 1899999996 characters processed.
+[BWTIncConstructFromPacked] 200 iterations done. 1999999996 characters processed.
+[BWTIncConstructFromPacked] 210 iterations done. 2099999996 characters processed.
+[BWTIncConstructFromPacked] 220 iterations done. 2199999996 characters processed.
+[BWTIncConstructFromPacked] 230 iterations done. 2299999996 characters processed.
+[BWTIncConstructFromPacked] 240 iterations done. 2399999996 characters processed.
+[BWTIncConstructFromPacked] 250 iterations done. 2499999996 characters processed.
+[BWTIncConstructFromPacked] 260 iterations done. 2599999996 characters processed.
+[BWTIncConstructFromPacked] 270 iterations done. 2699999996 characters processed.
+[BWTIncConstructFromPacked] 280 iterations done. 2799999996 characters processed.
+[BWTIncConstructFromPacked] 290 iterations done. 2899999996 characters processed.
+[BWTIncConstructFromPacked] 300 iterations done. 2999999996 characters processed.
+[BWTIncConstructFromPacked] 310 iterations done. 3099999996 characters processed.
+[BWTIncConstructFromPacked] 320 iterations done. 3199999996 characters processed.
+[BWTIncConstructFromPacked] 330 iterations done. 3299999996 characters processed.
+[BWTIncConstructFromPacked] 340 iterations done. 3399999996 characters processed.
+[BWTIncConstructFromPacked] 350 iterations done. 3499999996 characters processed.
+[BWTIncConstructFromPacked] 360 iterations done. 3599999996 characters processed.
+[BWTIncConstructFromPacked] 370 iterations done. 3699999996 characters processed.
+[BWTIncConstructFromPacked] 380 iterations done. 3799999996 characters processed.
+[BWTIncConstructFromPacked] 390 iterations done. 3899999996 characters processed.
+[BWTIncConstructFromPacked] 400 iterations done. 3999999996 characters processed.
+[BWTIncConstructFromPacked] 410 iterations done. 4099999996 characters processed.
+[BWTIncConstructFromPacked] 420 iterations done. 4199999996 characters processed.
+[BWTIncConstructFromPacked] 430 iterations done. 4299999996 characters processed.
+[BWTIncConstructFromPacked] 440 iterations done. 4399999996 characters processed.
+[BWTIncConstructFromPacked] 450 iterations done. 4499999996 characters processed.
+[BWTIncConstructFromPacked] 460 iterations done. 4599999996 characters processed.
+[BWTIncConstructFromPacked] 470 iterations done. 4699999996 characters processed.
+[BWTIncConstructFromPacked] 480 iterations done. 4799999996 characters processed.
+[BWTIncConstructFromPacked] 490 iterations done. 4899999996 characters processed.
+[BWTIncConstructFromPacked] 500 iterations done. 4999999996 characters processed.
+[BWTIncConstructFromPacked] 510 iterations done. 5099999996 characters processed.
+[BWTIncConstructFromPacked] 520 iterations done. 5199999996 characters processed.
+[BWTIncConstructFromPacked] 530 iterations done. 5299999996 characters processed.
+[BWTIncConstructFromPacked] 540 iterations done. 5399999996 characters processed.
+[BWTIncConstructFromPacked] 550 iterations done. 5499999996 characters processed.
+[BWTIncConstructFromPacked] 560 iterations done. 5595427468 characters processed.
+[BWTIncConstructFromPacked] 570 iterations done. 5680296300 characters processed.
+[BWTIncConstructFromPacked] 580 iterations done. 5755723948 characters processed.
+[BWTIncConstructFromPacked] 590 iterations done. 5822760252 characters processed.
+[BWTIncConstructFromPacked] 600 iterations done. 5882338252 characters processed.
+[BWTIncConstructFromPacked] 610 iterations done. 5935287340 characters processed.
+[BWTIncConstructFromPacked] 620 iterations done. 5982344572 characters processed.
+[BWTIncConstructFromPacked] 630 iterations done. 6024165116 characters processed.
+[BWTIncConstructFromPacked] 640 iterations done. 6061331324 characters processed.
+[BWTIncConstructFromPacked] 650 iterations done. 6094360716 characters processed.
+[BWTIncConstructFromPacked] 660 iterations done. 6123713292 characters processed.
+[BWTIncConstructFromPacked] 670 iterations done. 6149797932 characters processed.
+[BWTIncConstructFromPacked] 680 iterations done. 6172977948 characters processed.
+[bwa_index] 2759.65 seconds elapse.
+[bwa_index] Update BWT... 18.60 sec
+[bwa_index] Pack forward-only FASTA... 15.61 sec
+[bwa_index] Construct SA from BWT and Occ... 758.04 sec
+[main] Version: 0.7.12-r1039
+[main] CMD: /software/mb/el6.3/bwa/bwa-0.7.12/bwa index /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38/ucsc/hg38_chr1-22XYMUn.fa
+[main] Real time: 3731.012 sec; CPU: 3582.142 sec

@@ -8,4 +8,4 @@
 #$ -o /users/GR/mb/jquilez/utils/job_out/bwa_index_fasta_homo_sapiens_hg19_$JOB_ID.out
 #$ -e /users/GR/mb/jquilez/utils/job_out/bwa_index_fasta_homo_sapiens_hg19_$JOB_ID.err
 #$ -pe smp 1
-/software/mb/el6.3/bwa/bwa-0.7.12/bwa index /users/GR/mb/jquilez/assemblies/homo_sapiens/hg19/ucsc/hg19.fa
+/software/mb/el6.3/bwa/bwa-0.7.12/bwa index /users/GR/mb/jquilez/assemblies/homo_sapiens/hg19/ucsc/hg19_chr1-22XYMUn.fa

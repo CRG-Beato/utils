@@ -22,18 +22,19 @@
 # Variables 
 process="star_generate_genome1_sjdb"
 species="homo_sapiens"
-version="hg19"
-read_length=100
+version="hg38_mmtv"
+read_length=50
+fasta_name=${version}_chr1-22XYMUn
 
 # Paths
 GENOME_DIR=$HOME/assemblies/$species/$version/star_genome_index/read_length_${read_length}bp
-genome_fasta=$HOME/assemblies/$species/$version/ucsc/$version.fa
+genome_fasta=$HOME/assemblies/$species/$version/ucsc/$fasta_name.fa
 JOB_CMD=$HOME/utils/job_cmd 
 JOB_OUT=$HOME/utils/job_out
 mkdir -p $GENOME_DIR
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
-star=`which STAR`
+star=`which star`
 
 # define gene annoation file based on the assembly version 
 if [[ $version == "hg19" ]]; then 

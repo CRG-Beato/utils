@@ -8,4 +8,4 @@
 #$ -o /users/GR/mb/jquilez/utils/job_out/gem_generate_index_homo_sapiens_hg38_mmtv_$JOB_ID.out
 #$ -e /users/GR/mb/jquilez/utils/job_out/gem_generate_index_homo_sapiens_hg38_mmtv_$JOB_ID.err
 #$ -pe smp 8
-/software/mb/bin/gem-indexer -i /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38_mmtv/ucsc/hg38_mmtv.fa -o /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38_mmtv/ucsc/hg38_mmtv.gem -T 8
+/software/mb/bin/gem-indexer -i /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38_mmtv/ucsc/hg38_mmtv_chr1-22XYM.fa -o /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38_mmtv/ucsc/hg38_mmtv_chr1-22XYM.gem -T 8

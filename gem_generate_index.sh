@@ -15,17 +15,18 @@
 
 # Variables 
 process="gem_generate_index"
-species="homo_sapiens"
-version="hg38_mmtv"
+species="mus_musculus"
+version="mm10"
+fasta_name=${version}_chr1-19XYM
 
 # Paths
-genome_fasta=$HOME/assemblies/$species/$version/ucsc/$version.fa
+genome_fasta=$HOME/assemblies/$species/$version/ucsc/$fasta_name.fa
 JOB_CMD=$HOME/utils/job_cmd 
 JOB_OUT=$HOME/utils/job_out
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
 gem_indexer=`which gem-indexer`
-gem_index=$HOME/assemblies/$species/$version/ucsc/$version.gem
+gem_index=$HOME/assemblies/$species/$version/ucsc/$fasta_name
 
 # CRG cluster parameters
 queue=short-sl65
@@ -61,3 +62,4 @@ echo $job_cmd >> $job_file
 # Submit job
 chmod a+x $job_file 
 qsub < $job_file
+#cat $job_file

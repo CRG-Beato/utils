@@ -22,12 +22,12 @@
 #==================================================================================================
 
 # variables
-samples="eaed0e91e_467f847a2 dc3a1e069_467f847a2 a1e46328c_467f847a2 9a7c4a68d_467f847a2 e4aa8d54f_467f847a2 f63c93d81_467f847a2"
+samples="fd_004_02_01_rnaseq fd_004_03_01_rnaseq fd_005_02_01_rnaseq fd_005_03_01_rnaseq fd_006_02_01_rnaseq fd_006_03_01_rnaseq fd_010_01_01_rnaseq fd_010_02_01_rnaseq"
 process=quality_control
-project=4DGenome
-release_date=2016-03-17
-data_type=hic
-analysis=2016-04-13_run_hic-16.03_sequencing_2016-03-17
+project=fdily
+release_date=2014-06-06
+data_type=rnaseq
+analysis=2016-06-30_run_rnaseq-16.06_sequencing_2014-06-06_crg
 sequencing_type="PE"
 integrate_metadata="yes"
 

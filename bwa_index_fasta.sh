@@ -17,15 +17,15 @@
 process="bwa_index_fasta"
 species="homo_sapiens"
 version="hg38_mmtv"
+fasta_name=${version}_chr1-22XYM
 
 # paths
-genome_fasta=$HOME/assemblies/$species/$version/ucsc/$version.fa
+genome_fasta=$HOME/assemblies/$species/$version/ucsc/$fasta_name.fa
 JOB_CMD=$HOME/utils/job_cmd 
 JOB_OUT=$HOME/utils/job_out
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
-# I use this newer BWA version instead of that pointed by `which bwa` (0.7.10-r789)
-bwa=/software/mb/el6.3/bwa/bwa-0.7.12/bwa
+bwa=`which bwa`
 
 # CRG cluster parameters
 queue=short-sl65
@@ -61,3 +61,4 @@ echo $job_cmd >> $job_file
 # Submit job
 chmod a+x $job_file 
 qsub < $job_file
+#cat $job_file

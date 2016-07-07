@@ -15,11 +15,12 @@
 #==================================================================================================
 
 # variables
-analysis=2016-03-16_run_pipeline_Yannick_Spill
-download_date=2016-03-16
+analysis=2016-06-27_run_hic-16.05_rao_samples_evidal
+download_date=2016-06-27
 process=fastq_dump_from_sra
 project='4DGenome'
 data_type='hic'
+table_name=sample_id_to_srr_rows101-150.txt
 
 # paths
 if [[ $project == '4DGenome' ]]; then
@@ -31,11 +32,11 @@ else
 fi
 mkdir -p $ODIR
 ANALYSIS=$PROJECT/analysis/$analysis
-itab=$PROJECT/analysis/$analysis/tables/sample_id_to_srr.txt
 JOB_CMD=$ANALYSIS/job_cmd
 JOB_OUT=$ANALYSIS/job_out
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
+itab=$PROJECT/analysis/$analysis/tables/$table_name
 
 # Cluster parameters
 queue=long-sl65
@@ -83,5 +84,6 @@ while read line; do
 	# Submit job
 	chmod a+x $job_file
 	qsub < $job_file
+	sleep 10
 
 done <$itab

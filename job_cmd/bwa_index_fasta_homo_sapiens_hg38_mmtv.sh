@@ -8,4 +8,4 @@
 #$ -o /users/GR/mb/jquilez/utils/job_out/bwa_index_fasta_homo_sapiens_hg38_mmtv_$JOB_ID.out
 #$ -e /users/GR/mb/jquilez/utils/job_out/bwa_index_fasta_homo_sapiens_hg38_mmtv_$JOB_ID.err
 #$ -pe smp 1
-/software/mb/el6.3/bwa/bwa-0.7.12/bwa index /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38_mmtv/ucsc/hg38_mmtv.fa
+/software/mb/bin/bwa index /users/GR/mb/jquilez/assemblies/homo_sapiens/hg38_mmtv/ucsc/hg38_mmtv_chr1-22XYM.fa

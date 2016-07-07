@@ -8,4 +8,4 @@
 #$ -o /users/GR/mb/jquilez/utils/job_out/gem_generate_index_mus_musculus_mm10_$JOB_ID.out
 #$ -e /users/GR/mb/jquilez/utils/job_out/gem_generate_index_mus_musculus_mm10_$JOB_ID.err
 #$ -pe smp 8
-/software/mb/bin/gem-indexer -i /users/GR/mb/jquilez/assemblies/mus_musculus/mm10/ucsc/mm10.fa -o /users/GR/mb/jquilez/assemblies/mus_musculus/mm10/ucsc/mm10.gem -T 8
+/software/mb/bin/gem-indexer -i /users/GR/mb/jquilez/assemblies/mus_musculus/mm10/ucsc/mm10_chr1-19XYM.fa -o /users/GR/mb/jquilez/assemblies/mus_musculus/mm10/ucsc/mm10_chr1-19XYM.gem -T 8

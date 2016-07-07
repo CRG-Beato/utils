@@ -72,7 +72,7 @@ elif mode == "get_from_metadata":
 	table = sys.argv[3]
 	sample_id = sys.argv[4]
 	attribute = sys.argv[5]
-	print metadata, mode, table, sample_id#, attribute
+	#print metadata, mode, table, sample_id, attribute
 	# load table, select sample and print attribute
 	tab = db.load_table(table)
 	my_sample = tab.find(SAMPLE_ID = sample_id)
@@ -90,10 +90,18 @@ elif mode == "add_to_metadata":
 	value = sys.argv[7]
 	my_key = ";".join([sample_id, time_stamp])
 
-	# load/create table and add data
 	# important: because this script may be used in parallel, with many instances trying to access to the data
 	# do not use transactions (e.g. db.begin(), db.commit()...) as these do not allow multiple writings to the database
-	tab = db.get_table(table, primary_id = 'JOB_ID', primary_type = 'String')
+
+	# *seq table stores the most recent values
+	tab = db.get_table(table, primary_id = 'SAMPLE_ID', primary_type = 'String')
+ 	new_data = {}
+ 	new_data['SAMPLE_ID'] = sample_id
+ 	new_data[attribute] = value
+ 	tab.upsert(new_data, ['SAMPLE_ID'])
+
+ 	# jobs table stores all values from different jobs
+	tab = db.get_table('jobs', primary_id = 'JOB_ID', primary_type = 'String')
  	new_data = {}
  	new_data['JOB_ID'] = my_key
  	new_data[attribute] = value

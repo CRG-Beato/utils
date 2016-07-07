@@ -16,12 +16,12 @@
 #==================================================================================================
 
 # variables
-samples="e22e868a9_d222de8ea e22e868a9_869faec68 e22e868a9_6bddf5c69 8d2ac542f_d222de8ea"
+samples="LDC_1 LDC_2 LDC_3"
 process=combine_fastqs
 project=4DGenome
-release_date=2016-04-09
-data_type=''
-analysis=2016-04-13_run_hic-16.03_sequencing_2016-04-09
+release_date=2016-06-28
+data_type='hic'
+analysis=2016-06-29_run_hic-16.05_sequencing_2016-06-28_unit
 sequencing_type="PE"
 
 # paths

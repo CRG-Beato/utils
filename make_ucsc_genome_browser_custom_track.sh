@@ -23,15 +23,17 @@
 # data_type = rnaseq & track_type = profiles
 # data_type = hic & track_type = ev1 
 # data_type = hic  & track_type = tads 
+# data_type = atactseq & track_type = profiles 
+# data_type = atactseq & track_type = peaks_macs2_without_control 
 # data_type =  & track_type = 
 
 
 # variables
-samples="fd_004_01_01_rnaseq fd_004_02_01_rnaseq fd_004_03_01_rnaseq fd_005_01_01_rnaseq fd_005_02_01_rnaseq fd_005_03_01_rnaseq fd_006_01_01_rnaseq fd_006_02_01_rnaseq fd_006_03_01_rnaseq fd_010_01_01_rnaseq fd_010_02_01_rnaseq"
-data_type=rnaseq
-track_type=profiles
+samples="al_001_01_01_chipseq al_002_01_01_chipseq al_001_02_01_chipseq al_002_02_01_chipseq al_003_01_01_chipseq al_004_01_01_chipseq al_005_01_01_chipseq"
+data_type=chipseq
+track_type=peaks_macs2
 version=hg38_mmtv
-sequencing_type=paired_end
+sequencing_type=single_end
 autoScale=off
 alwaysZero=on
 viewLimits=0.0:1.0
@@ -47,7 +49,13 @@ io_metadata=/users/project/4DGenome/utils/io_metadata.sh
 python=`which python`
 bed2bb=`which bedToBigBed`
 bedgraph_to_bigwig=`which bedGraphToBigWig`
-chrom_sizes=$HOME/assemblies/homo_sapiens/$version/ucsc/${version}_chr1-22XYMUn.chrom.sizes
+if [[ $version == "hg38" || $version == "hg38_mmtv" ]]; then
+	chrom_sizes=$HOME/assemblies/homo_sapiens/$version/ucsc/${version}_chr1-22XYMUn.chrom.sizes
+elif [[ $version == "mm10" ]]; then
+	chrom_sizes=$HOME/assemblies/mus_musculus/$version/ucsc/${version}_chr1-19XYM.chrom.sizes
+elif [[ $version == "hg19" ]]; then
+	chrom_sizes=$HOME/assemblies/homo_sapiens/$version/ucsc/${version}_chr1-22XYMUn.chrom.sizes
+fi
 narrow_peak_specification=$HOME/assemblies/misc/narrowPeak.as
 
 
@@ -74,6 +82,8 @@ for s in $samples; do
 		# make UCSC Genome Browser custom track header
 		if [[ $version == 'hg38_mmtv' ]]; then
 			db=hg38
+		elif [[ $version == 'hg19' ]]; then
+			db=hg19
 		fi
 		url="http://public-docs.crg.es/mbeato/jquilez/$SHARED_PATH/$fname"	
 		cmd="track type=narrowPeak \
@@ -210,6 +220,7 @@ for s in $samples; do
 
 		# copy data to the `file_transfer` directory, which is accessible for the UCSC Genome browser
 		cp $ifile $ofile
+
 
 	elif [[ $track_type == "profiles" && $data_type == "chrrnaseq" ]]; then
 
@@ -405,6 +416,83 @@ for s in $samples; do
 
 		# copy data to the `file_transfer` directory, which is accessible for the UCSC Genome browser
 		cp $ifile $ofile
+
+	elif [[ $track_type == "profiles" ]] && [[ $data_type == "atacseq" ]]; then
+
+		#SHARED_PATH=data/$data_type/samples/$s/profiles/$version
+		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type
+
+		# input/output filez/directories
+		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		fname=`basename $ifile`
+		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+		ofile=$ODIR/$fname
+
+		# convert SAMPLE_ID to SAMPLE_NAME (the latter is more meaningful biologically)
+		sample_name=`$python $print_metadata_table input_metadata $s SAMPLE_NAME`
+
+		# UCSC Genome Browser custom track description
+		url="http://public-docs.crg.es/mbeato/jquilez/$SHARED_PATH/$fname"
+		cmd="track type=bigWig \
+				name='${sample_name} rpms' \
+				description='$sample_name, reads per million (RPM)'
+				bigDataUrl=$url \
+				alwaysZero=$alwaysZero \
+				visibility=$visibility \
+				autoScale=$autoScale \
+				viewLimits=$viewLimits \
+				maxHeightPixels=$maxHeightPixels \
+				color=204,102,0"
+		echo $cmd
+		echo "browser position $browser_position"
+		echo		
+
+		# copy data to the `file_transfer` directory, which is accessible for the UCSC Genome browser
+		cp $ifile $ofile
+
+	elif [[ $track_type == "peaks_macs2_without_control" && $data_type == "atacseq" ]]; then
+
+		# define paths
+		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/sample_alone/$sequencing_type
+		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*.narrowPeak
+		fname=`basename $ifile`
+		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+		obed=$ODIR/$fname
+
+		# convert SAMPLE_ID to SAMPLE_NAME (the latter is more meaningful biologically)
+		sample_name=`$python $print_metadata_table input_metadata $s SAMPLE_NAME`
+
+		# make UCSC Genome Browser custom track header
+		if [[ $version == 'hg38_mmtv' ]]; then
+			db=hg38
+		fi
+		url="http://public-docs.crg.es/mbeato/jquilez/$SHARED_PATH/$fname"	
+		cmd="track type=narrowPeak \
+				name='${sample_name} peaks (macs2) without control' \
+				description='$sample_name ($s), peaks (MACS2 without control)' \
+				visibility=1 \
+				useScore=1 \
+				db=$db \
+				url=$url \
+				color=26,27,27"
+		echo $cmd > $obed
+		cmd="browser position $browser_position"
+		echo $cmd >> $obed
+
+		# add file content while skipping calls in the mmtv_luciferase contig
+		grep -v 'mmtv_luciferase\|chrUn' $ifile >> $obed
+
+		# additionally convert narrowPeak to bigBed
+		obb=`echo $obed |sed "s/narrowPeak/bb/g"`
+		tbed=$ODIR/tmp.bed
+		grep -v 'track\|browser' $obed |awk '{OFS="\t"; print $1,$2,$3,$4,int($9),$6,$7,$8,$9,$10}' > $tbed
+		$bed2bb $tbed $chrom_sizes $obb -as=$narrow_peak_specification -type=bed6+4
+		rm $tbed
+
+		echo $url
+		echo
 
 	fi 
 

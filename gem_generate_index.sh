@@ -15,9 +15,9 @@
 
 # Variables 
 process="gem_generate_index"
-species="mus_musculus"
-version="mm10"
-fasta_name=${version}_chr1-19XYM
+species="drosophila_melanogaster"
+version="dm6"
+fasta_name=${version}_chr2-4XYM
 
 # Paths
 genome_fasta=$HOME/assemblies/$species/$version/ucsc/$fasta_name.fa

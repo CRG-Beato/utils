@@ -16,11 +16,11 @@
 
 # variables
 analysis=2016-06-27_run_hic-16.05_rao_samples_evidal
-download_date=2016-06-27
+download_date=2016-09-07
 process=fastq_dump_from_sra
 project='4DGenome'
 data_type='hic'
-table_name=sample_id_to_srr_rows101-150.txt
+table_name=sample_id_to_srr_batch_2016_09_07.txt
 
 # paths
 if [[ $project == '4DGenome' ]]; then

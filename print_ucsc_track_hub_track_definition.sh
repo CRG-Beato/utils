@@ -13,13 +13,27 @@
 # CONFIGURATION VARIABLES AND PATHS
 #==================================================================================================
 
+# possible combinations
+# data_type = chipseq & track_type = peaks_macs2
+# data_type = chipseq & track_type = peaks_macs2_without_control
+# data_type = chipseq & track_type = peaks_zerone 
+# data_type = chipseq & track_type = profiles
+# data_type = chrrnaseq & track_type = profiles 
+# data_type = rnaseq & track_type = profiles
+# data_type = hic & track_type = ev1 
+# data_type = hic  & track_type = tads 
+# data_type = atactseq & track_type = profiles 
+# data_type = atactseq & track_type = peaks_macs2_without_control 
+# data_type =  & track_type = 
+
 # variables
-project=fdily
-samples="fd_004_01_01_rnaseq fd_004_02_01_rnaseq fd_004_03_01_rnaseq fd_005_01_01_rnaseq fd_005_02_01_rnaseq fd_005_03_01_rnaseq fd_006_01_01_rnaseq fd_006_02_01_rnaseq fd_006_03_01_rnaseq fd_010_01_01_rnaseq fd_010_02_01_rnaseq"
-data_type=rnaseq
-track_type=profiles
+project=alioutas
+samples="al_001_01_01_chipseq al_002_01_01_chipseq al_001_02_01_chipseq al_002_02_01_chipseq al_003_01_01_chipseq al_004_01_01_chipseq al_005_01_01_chipseq"
+data_type=chipseq
+track_type=peaks_macs2
 version=hg38_mmtv
-sequencing_type=paired_end
+peak_caller=macs2
+sequencing_type=single_end
 autoScale=off
 alwaysZero=on
 viewLimits=0.0:1.0
@@ -73,11 +87,11 @@ for s in $samples; do
 		# cell line
 		cell_line_new=`echo ${cell_line,,} |sed "s/-/_/g"`
 
-		if [[ $composite_track == "hic_ev1" ]]; then 
+		if [[ $composite_track == "hic_ev1" ]]; then
 
 			echo -e "\t\ttrack ${s}_hic_ev1"
 			echo -e "\t\tparent $composite_track"
-			echo -e "\t\tbigDataUrl ../../$data_type/samples/$s/downstream/$version/${s}_ev_100kb.bw"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/downstream/$version/${s}_ev_100kb.bw"
 			echo -e "\t\tshortLabel $sample_name ($s)"
 			echo -e "\t\tlongLabel $s ($sample_name) EV1"
 			echo -e "\t\ttype bigWig"
@@ -88,7 +102,7 @@ for s in $samples; do
 
 			echo -e "\t\ttrack ${s}_hic_tads"
 			echo -e "\t\tparent $composite_track"
-			echo -e "\t\tbigDataUrl ../../$data_type/samples/$s/downstream/$version/${s}_tads_allchr.bb"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/downstream/$version/${s}_tads_allchr.bb"
 			echo -e "\t\tshortLabel $sample_name ($s)"
 			echo -e "\t\tlongLabel $sample_name ($s) TADs"
 			echo -e "\t\ttype bigBed"
@@ -99,7 +113,7 @@ for s in $samples; do
 
 	else
 
-		# script to access the 4DGenome metadata
+		# script to access the Beato Lab metadata
 		io_metadata=/users/GR/mb/jquilez/utils/io_metadata.sh
 
 		# get metadata
@@ -108,16 +122,46 @@ for s in $samples; do
 		treatment=`$io_metadata -m get_from_metadata -s $s -t input_metadata -a TREATMENT`
 		treatment_time=`$io_metadata -m get_from_metadata -s $s -t input_metadata -a TREATMENT_TIME`
 		user=`$io_metadata -m get_from_metadata -s $s -t input_metadata -a USER`
+		target_protein=`$io_metadata -m get_from_metadata -s $s -t input_metadata -a TARGET_PROTEIN`
+
+		# convert to the keys/values for the treatment time into those used in the track hub
+		# treatment time
+		if [[ $treatment_time == '0' ]]; then treatment_time_new=t0000
+		elif [[ $treatment_time == '5' ]]; then treatment_time_new=t0005
+		elif [[ $treatment_time == '15' ]]; then treatment_time_new=t0015
+		elif [[ $treatment_time == '30' ]]; then treatment_time_new=t0030
+		elif [[ $treatment_time == '60' ]]; then treatment_time_new=t0060
+		elif [[ $treatment_time == '180' ]]; then treatment_time_new=t0180
+		elif [[ $treatment_time == '360' ]]; then treatment_time_new=t0360
+		elif [[ $treatment_time == '1440' ]]; then treatment_time_new=t1440
+		fi
+		# user
+		user_new=`echo ${user,,} |sed "s/ /_/g"`
+		# cell line
+		cell_line_new=`echo ${cell_line,,} |sed "s/-/_/g"`
+		# target protein
+		target_protein_new=`echo ${target_protein,,} |sed "s/chip-//g"`
 
 		if [[ $composite_track == "chipseq_profiles" ]]; then 
 
 			echo -e "\t\ttrack ${s}_profile"
 			echo -e "\t\tparent $composite_track"
-			echo -e "\t\tbigDataUrl ../../$data_type/samples/$s/$track_type/$version/$sequencing_type/$s.rpm.bw"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type/$s.rpm.bw"
 			echo -e "\t\tshortLabel $sample_name"
 			echo -e "\t\tlongLabel $sample_name ($s) RPM profile"
 			echo -e "\t\ttype bigWig"
-			echo -e "\t\tsubGroups cell_line=$cell_line antibody=${target_protein_new,,} treatment_time=$treatment_time_new"
+			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new"
+			echo
+
+		elif [[ $composite_track == "chipseq_peaks_macs2" ]]; then 
+
+			echo -e "\t\ttrack ${s}_peaks_macs2"
+			echo -e "\t\tparent $composite_track"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/peaks/$peak_caller/$version/with_control/$sequencing_type/${s}_peaks.bb"
+			echo -e "\t\tshortLabel $sample_name"
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks"
+			echo -e "\t\ttype bigBed"
+			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new"
 			echo
 
 		elif [[ $composite_track == "rnaseq_profiles" ]]; then
@@ -153,6 +197,28 @@ for s in $samples; do
 			echo -e "\t\tnegateValues on"
   	    	echo -e "\t\tcolor 0,128,0"
 
+			echo
+
+		elif [[ $composite_track == "atacseq_profiles" ]]; then 
+
+			echo -e "\t\ttrack ${s}_profile"
+			echo -e "\t\tparent $composite_track"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type/$s.rpm.bw"
+			echo -e "\t\tshortLabel $sample_name"
+			echo -e "\t\tlongLabel $sample_name ($s) RPM profile"
+			echo -e "\t\ttype bigWig"
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new"
+			echo
+
+		elif [[ $composite_track == "atacseq_peaks_macs2_without_control" ]]; then 
+
+			echo -e "\t\ttrack ${s}_peaks_macs2"
+			echo -e "\t\tparent $composite_track"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/peaks/$peak_caller/$version/sample_alone/$sequencing_type/${s}_peaks.bb"
+			echo -e "\t\tshortLabel $sample_name"
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks (without control)"
+			echo -e "\t\ttype bigBed"
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new"
 			echo
 
 		fi

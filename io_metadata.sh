@@ -126,6 +126,7 @@ download_input_metadata() {
 	wget --no-check-certificate -q -O - $url > $spreadsheet
 
 	# update metada and delete intermediate file
+	#cat $spreadsheet
 	python $io_metadata $db download_input_metadata $spreadsheet
 	rm $spreadsheet
 }

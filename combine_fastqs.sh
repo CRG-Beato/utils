@@ -16,13 +16,13 @@
 #==================================================================================================
 
 # variables
-samples="LDC_1 LDC_2 LDC_3"
+samples="al_001_01_01_chipseq al_002_01_01_chipseq al_001_02_01_chipseq al_002_02_01_chipseq al_003_01_01_chipseq al_004_01_01_chipseq al_005_01_01_chipseq"
 process=combine_fastqs
-project=4DGenome
-release_date=2016-06-28
-data_type='hic'
-analysis=2016-06-29_run_hic-16.05_sequencing_2016-06-28_unit
-sequencing_type="PE"
+project=alioutas
+release_date=2016-09-20
+data_type='chipseq'
+analysis=2016-09-21_run_chipseq-16.04_sequencing_2016-09-20_unit
+sequencing_type="SE"
 
 # paths
 if [[ $project == "4DGenome" ]]; then

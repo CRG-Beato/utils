@@ -15,11 +15,11 @@
 #==================================================================================================
 
 # variables 
-run_id=160704_NS500645_0059_AHCL32BGXY_RUN55_4DG_2
-release_date=2016-07-07
+run_id=160920_NS500645_0067_AHMKGFBGXY_RUN63_MB24
+release_date=2016-09-20
 scp=`which scp`
-project=4DGenome
-data_type='hic'
+project=alioutas
+data_type='chipseq'
 
 # paths
 IDIR=four-d@172.17.133.110:/home/four-d/Desktop/$run_id/Data/Intensities/BaseCalls

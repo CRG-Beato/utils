@@ -22,13 +22,13 @@
 #==================================================================================================
 
 # variables
-samples="fd_004_02_01_rnaseq fd_004_03_01_rnaseq fd_005_02_01_rnaseq fd_005_03_01_rnaseq fd_006_02_01_rnaseq fd_006_03_01_rnaseq fd_010_01_01_rnaseq fd_010_02_01_rnaseq"
+samples="ps_012_01_01_chipseq ps_013_01_01_chipseq ps_014_01_01_chipseq ps_015_01_01_chipseq"
 process=quality_control
-project=fdily
-release_date=2014-06-06
-data_type=rnaseq
-analysis=2016-06-30_run_rnaseq-16.06_sequencing_2014-06-06_crg
-sequencing_type="PE"
+project=psharma
+release_date=2016-09-23
+data_type=chipseq
+analysis=2016-09-27_run_chipseq-16.04_sequencing_2016-09-23_crg
+sequencing_type="SE"
 integrate_metadata="yes"
 
 # paths

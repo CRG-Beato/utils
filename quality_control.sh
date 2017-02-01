@@ -22,13 +22,13 @@
 #==================================================================================================
 
 # variables
-samples="ps_012_01_01_chipseq ps_013_01_01_chipseq ps_014_01_01_chipseq ps_015_01_01_chipseq"
+samples="CAR_5 CAR_6"
 process=quality_control
-project=psharma
-release_date=2016-09-23
-data_type=chipseq
-analysis=2016-09-27_run_chipseq-16.04_sequencing_2016-09-23_crg
-sequencing_type="SE"
+project=4DGenome
+release_date=2017-01-11
+data_type=hic
+analysis=2017-01-26_run_hic-16.05_sequencing_herrera_01_cnag
+sequencing_type="PE"
 integrate_metadata="yes"
 
 # paths
@@ -47,7 +47,7 @@ JOB_OUT=$ANALYSIS/job_out
 mkdir -p $FASTQC
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
-fastqc=/users/GR/mb/jquilez/software/FastQC/fastqc
+fastqc=`which fastqc`
 unzip=`which unzip`
 
 # Cluster parameters

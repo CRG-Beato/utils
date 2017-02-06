@@ -22,12 +22,12 @@
 #==================================================================================================
 
 # variables
-samples="CAR_5 CAR_6"
+samples="2eb5ca0d0_9109053af"
 process=quality_control
 project=4DGenome
-release_date=2017-01-11
+release_date=2017-02-01
 data_type=hic
-analysis=2017-01-26_run_hic-16.05_sequencing_herrera_01_cnag
+analysis=2017-02-02_run_hic-16.05_sequencing_2017-02-01_unit
 sequencing_type="PE"
 integrate_metadata="yes"
 
@@ -51,8 +51,8 @@ fastqc=`which fastqc`
 unzip=`which unzip`
 
 # Cluster parameters
-queue=short-sl65
-memory=10G
+queue=short-sl7
+memory=15G
 max_time=06:00:00
 slots=1
 

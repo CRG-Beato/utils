@@ -7,6 +7,8 @@
 # Author: Javier Quilez (GitHub: jaquol)
 # Goal: copy project-specific analyses from their original directory to the one which is visible
 # from the public-docs website http://public-docs.crg.es/mbeato/jquilez/ 
+# ipy_hide_input is used to remove the code from the *.slides.html report
+# source: http://hannes-brt.github.io/blog/2013/08/11/ipython-slideshows-will-change-the-way-you-work/
 #==================================================================================================
 
 
@@ -21,6 +23,7 @@ analysis=$2
 # paths
 PROJECTS=$HOME/projects
 FILE_TRANSFER=$HOME/file_transfer
+ipy_hide_input=$HOME/utils/ipy_hide_input
 
 
 
@@ -62,7 +65,9 @@ copy_directory() {
 			#ls *ipynb
 			#rm *slides.html
 			#ls *slides.html
-		ipython nbconvert --to slides *ipynb
+		jupyter nbconvert --to slides *ipynb
+		$ipy_hide_input $analysis.slides.html
+
 	#	fi
 	#	cd 		 
 	done

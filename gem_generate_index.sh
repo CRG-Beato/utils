@@ -16,17 +16,18 @@
 # Variables 
 process="gem_generate_index"
 species="drosophila_melanogaster"
-version="dm6"
-fasta_name=${version}_chr2-4XYM
+version="dm3"
+fasta_name=${version}
+download_site=flybase
 
-# Paths
-genome_fasta=$HOME/assemblies/$species/$version/ucsc/$fasta_name.fa
+# paths
+genome_fasta=$HOME/assemblies/$species/$version/$download_site/$fasta_name.fa
 JOB_CMD=$HOME/utils/job_cmd 
 JOB_OUT=$HOME/utils/job_out
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
 gem_indexer=`which gem-indexer`
-gem_index=$HOME/assemblies/$species/$version/ucsc/$fasta_name
+gem_index=$HOME/assemblies/$species/$version/$download_site/$fasta_name
 
 # CRG cluster parameters
 queue=short-sl65

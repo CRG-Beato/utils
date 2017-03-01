@@ -30,7 +30,7 @@ gem_indexer=`which gem-indexer`
 gem_index=$HOME/assemblies/$species/$version/$download_site/$fasta_name
 
 # CRG cluster parameters
-queue=short-sl65
+queue=short-sl7
 memory=50G
 max_time=06:00:00
 slots=8

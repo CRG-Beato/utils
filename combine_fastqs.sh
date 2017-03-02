@@ -16,13 +16,13 @@
 #==================================================================================================
 
 # variables
-samples="al_001_01_01_chipseq al_002_01_01_chipseq al_001_02_01_chipseq al_002_02_01_chipseq al_003_01_01_chipseq al_004_01_01_chipseq al_005_01_01_chipseq"
+samples="dc3a1e069_a1dad1500 4d17b2205_a1dad1500 b1913e6c1_a1dad1500 dd7dbfbbf_a1dad1500 FPR_13 FPR_14 FPR_15 FPR_16 8d2ac542f_a4f043907 8d2ac542f_e6ebe379a e22e868a9_a4f043907 e22e868a9_e6ebe379a"
 process=combine_fastqs
-project=alioutas
-release_date=2016-09-20
-data_type='chipseq'
-analysis=2016-09-21_run_chipseq-16.04_sequencing_2016-09-20_unit
-sequencing_type="SE"
+project=4DGenome
+release_date=2017-02-27
+data_type='hic'
+analysis=2017-02-28_run_hic-16.05_sequencing_2017-02-27_unit
+sequencing_type="PE"
 
 # paths
 if [[ $project == "4DGenome" ]]; then
@@ -38,7 +38,7 @@ mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
 
 # Cluster parameters
-queue=short-sl65
+queue=short-sl7
 memory=10G
 max_time=06:00:00
 slots=1

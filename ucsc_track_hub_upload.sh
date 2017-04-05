@@ -21,10 +21,10 @@
 #==================================================================================================
 
 # variables
-samples="dc3a1e069_04f8bf765_read1 dc3a1e069_04f8bf765_read2 9a7c4a68d_04f8bf765_read1 9a7c4a68d_04f8bf765_read2 b1913e6c1_c64b85dae_read1 b1913e6c1_c64b85dae_read2 dc3a1e069_8cb5a8f84_read1 dc3a1e069_8cb5a8f84_read2 dc3a1e069_20d350f24_read1 dc3a1e069_20d350f24_read2 9a7c4a68d_20d350f24_read1 9a7c4a68d_20d350f24_read2 b1913e6c1_20d350f24_read1 b1913e6c1_20d350f24_read2 dc3a1e069_8a65d91d8_read1 dc3a1e069_8a65d91d8_read2 e3300907f_20d350f24_read1 e3300907f_20d350f24_read2"
-data_type=hichipseq
+samples="ps_001_01_01_chrrnaseq ps_001_02_05_chrrnaseq ps_002_01_01_chrrnaseq ps_002_02_01_chrrnaseq ps_003_01_01_chrrnaseq ps_003_02_01_chrrnaseq ps_004_01_01_chrrnaseq ps_004_02_01_chrrnaseq"
+data_type=chrrnaseq
 call_peaks_mode=with_control
-project=fdily
+project=psharma
 
 # paths
 python=`which python`
@@ -73,6 +73,7 @@ for s in $samples; do
 	elif [[ $treatment_time == '60' ]]; then treatment_time_new=t0060
 	elif [[ $treatment_time == '180' ]]; then treatment_time_new=t0180
 	elif [[ $treatment_time == '360' ]]; then treatment_time_new=t0360
+	elif [[ $treatment_time == '720' ]]; then treatment_time_new=t0720
 	elif [[ $treatment_time == '1440' ]]; then treatment_time_new=t1440
 	fi
 	# user
@@ -140,7 +141,7 @@ for s in $samples; do
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		fi	
-		echo >> $composite_track.txt
+		#echo >> $composite_track.txt
 
 
 		# peaks coordinates with -log10(FDR q-value)
@@ -221,15 +222,52 @@ for s in $samples; do
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		fi	
-		echo >> $composite_track.txt
+		#echo >> $composite_track.txt
+
+
+		# peaks coordinates with -log10(FDR q-value)
+		echo "... preparing peaks coordinates with -log10(FDR q-value)"
+
+		# define paths
+		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long
+		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_peaks.narrowPeak
+		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+
+		# convert to bigWig
+		fname=`basename $ifile |sed "s/narrowPeak/bw/g"`
+		tbed=$ODIR/tbed.bed
+		obw=$ODIR/$fname
+		grep -v mmtv_luciferase $ifile | cut -f1-3,9 |$bedtools groupby -i stdin -g 1,2,3 -c 4 -o mean > $tbed
+		$bedgraph_to_bigwig $tbed $chrom_sizes $obw
+
+		# print track hub definitions
+		track_type=peaks_macs2_qvalues
+		composite_track=${data_type}_$track_type
+		echo -e >> $composite_track.txt
+		echo -e "\t\ttrack ${s}_$track_type" >> $composite_track.txt
+		echo -e "\t\tparent $composite_track" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long/${s}_peaks.bw" >> $composite_track.txt
+		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
+		if [[ $call_peaks_mode == "sample_alone" ]]; then
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks without control, -log10(q-value)" >> $composite_track.txt
+		elif [[ $call_peaks_mode == "with_control" ]]; then
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks, -log10(q-value)" >> $composite_track.txt
+		fi
+		echo -e "\t\ttype bigWig" >> $composite_track.txt
+		if [[ $project != "4DGenome" ]]; then
+			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		else
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		fi
 
 
 
 	#==================================================================================================
-	# RNA-seq
+	# RNA-seq or ChrRNA-seq
 	#==================================================================================================
 
-	elif [[ $data_type == "rnaseq" ]]; then
+	elif [[ $data_type == "rnaseq" || $data_type == "chrrnaseq" ]]; then
 
 	
 		# read per per million profiles
@@ -254,13 +292,14 @@ for s in $samples; do
   	   	echo -e "\tmaxHeightPixels 100:50:10" >> $composite_track.txt
   	   	echo -e "\tcolor 0,128,0" >> $composite_track.txt
    	    echo -e "\tpriority 6" >> $composite_track.txt
-   	    echo
+   	    echo >> $composite_track.txt
 
    	    strands="strand1 strand2"
 
    	    for strand in $strands; do
 
 			# input/output filez/directories
+			SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
 			ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_unique_multiple_${strand}_rpm.bw
 			fname=`basename $ifile`
 			ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
@@ -278,8 +317,49 @@ for s in $samples; do
   	    	if [[ $strand == "strand2" ]]; then
 				echo -e "\t\tnegateValues on" >> $composite_track.txt
 			fi
+
+	   	    echo >> $composite_track.txt
 		
 		done
+
+
+
+	#==================================================================================================
+	# ATAC-seq
+	#==================================================================================================
+
+	elif [[ $data_type == "atacseq" ]]; then
+
+	
+		# read per per million profiles
+		echo "... preparing read per million profiles"
+
+		# define paths
+		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
+		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		fname=`basename $ifile`
+		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+		obw=$ODIR/$fname
+
+		# copy data to the `file_transfer` directory
+		cp $ifile $obw
+
+		# print track hub definitions
+		track_type=profiles
+		composite_track=${data_type}_$track_type
+		echo -e >> $composite_track.txt
+		echo -e "\t\ttrack ${s}_profile" >> $composite_track.txt
+		echo -e "\t\tparent $composite_track" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
+		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
+		echo -e "\t\tlongLabel $sample_name ($s) RPM profile" >> $composite_track.txt
+		echo -e "\t\ttype bigWig" >> $composite_track.txt
+		if [[ $project != "4DGenome" ]]; then
+			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		else
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		fi	
 
 	fi
 

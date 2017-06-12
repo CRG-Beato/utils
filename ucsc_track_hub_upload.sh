@@ -21,10 +21,10 @@
 #==================================================================================================
 
 # variables
-samples="ps_001_01_01_chrrnaseq ps_001_02_05_chrrnaseq ps_002_01_01_chrrnaseq ps_002_02_01_chrrnaseq ps_003_01_01_chrrnaseq ps_003_02_01_chrrnaseq ps_004_01_01_chrrnaseq ps_004_02_01_chrrnaseq"
-data_type=chrrnaseq
+samples="gv_081_01_01_dnaseseq gv_082_01_01_dnaseseq gv_083_01_01_dnaseseq"
+data_type=dnaseseq
 call_peaks_mode=with_control
-project=psharma
+project=gvicent
 
 # paths
 python=`which python`
@@ -361,6 +361,44 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		fi	
 
+
+
+	#==================================================================================================
+	# DNAse-seq
+	#==================================================================================================
+
+	elif [[ $data_type == "dnaseseq" ]]; then
+
+	
+		# read per per million profiles
+		echo "... preparing read per million profiles"
+
+		# define paths
+		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
+		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		fname=`basename $ifile`
+		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+		obw=$ODIR/$fname
+
+		# copy data to the `file_transfer` directory
+		cp $ifile $obw
+
+		# print track hub definitions
+		track_type=profiles
+		composite_track=${data_type}_$track_type
+		echo -e >> $composite_track.txt
+		echo -e "\t\ttrack ${s}_profile" >> $composite_track.txt
+		echo -e "\t\tparent $composite_track" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
+		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
+		echo -e "\t\tlongLabel $sample_name ($s) RPM profile" >> $composite_track.txt
+		echo -e "\t\ttype bigWig" >> $composite_track.txt
+		if [[ $project != "4DGenome" ]]; then
+			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		else
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		fi	
 	fi
 
 done

@@ -23,7 +23,7 @@
 process="star_generate_genome1_sjdb"
 species="homo_sapiens"
 version="hg38_mmtv"
-read_length=50
+read_length=125
 fasta_name=${version}_chr1-22XYMUn
 
 # Paths
@@ -48,7 +48,7 @@ elif [[ $version == "hg38_mmtv" ]]; then
 fi 
 
 # CRG cluster parameters
-queue=short-sl65
+queue=long-sl7
 memory=50G
 max_time=06:00:00
 slots=8
@@ -70,6 +70,7 @@ echo "#!/bin/bash
 #$ -l h_rt=$max_time
 #$ -M javier.quilez@crg.eu
 #$ -m abe
+#$ -j y
 #$ -o $m_out/${job_name}_\$JOB_ID.out
 #$ -e $m_out/${job_name}_\$JOB_ID.err
 #$ -pe smp $slots" > $job_file

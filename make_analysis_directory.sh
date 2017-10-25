@@ -27,20 +27,26 @@ if [[ $project == "4DGenome" ]]; then
 	ANALYSIS=/users/project/4DGenome/analysis/$directory_name
 	mkdir -p $ANALYSIS/{scripts,tables,figures,data}
 	md=$ANALYSIS/$directory_name.md
+	ipynb=$ANALYSIS/$directory/$directory_name.ipynb
 	rm -f $md
-	echo "# $directory_name" >> $md
-	echo `printf '%100s\n' | tr ' ' -` >> $md
-	echo -e "\n**objective: ...**" >> $md
+	rm -f $ipynb
+	echo "# Introduction" >> $md
+	echo " " >> $md
 	echo -e "\n**paths are relative to /users/projects/4DGenome**\n\n" >> $md
+	notedown $md > $ipynb
+	rm -f $md
 else
 	ANALYSIS=/users/GR/mb/jquilez/projects/$project/analysis/${my_date}_${analysis}
 	mkdir -p $ANALYSIS/{scripts,tables,figures,data}
 	md=$ANALYSIS/$directory_name.md
+	ipynb=$ANALYSIS/$directory_name.ipynb
 	rm -f $md
-	echo "# $directory_name" >> $md
-	echo `printf '%100s\n' | tr ' ' -` >> $md
-	echo -e "\n**objective: ...**" >> $md
+	rm -f $ipynb
+	echo "# Introduction" >> $md
+	echo " " >> $md
 	echo -e "\n**paths are relative to /users/GR/mb/jquilez**\n\n" >> $md
+	notedown $md > $ipynb
+	rm -f $md
 fi
 
 echo -e "\nanalysis directory created at $ANALYSIS\n"

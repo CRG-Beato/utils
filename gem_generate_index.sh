@@ -15,10 +15,10 @@
 
 # Variables 
 process="gem_generate_index"
-species="drosophila_melanogaster"
-version="dm3"
+species="falco_peregrinus"
+version="falPer2"
 fasta_name=${version}
-download_site=flybase
+download_site=ncbi
 
 # paths
 genome_fasta=$HOME/assemblies/$species/$version/$download_site/$fasta_name.fa
@@ -52,6 +52,7 @@ echo "#!/bin/bash
 #$ -l h_rt=$max_time
 #$ -M javier.quilez@crg.eu
 #$ -m abe
+#$ -j y
 #$ -o $m_out/${job_name}_\$JOB_ID.out
 #$ -e $m_out/${job_name}_\$JOB_ID.err
 #$ -pe smp $slots" > $job_file

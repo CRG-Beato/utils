@@ -5,7 +5,7 @@
 # Created on: 2017-11-16
 # Usage: ./prepare_bcl2fastq.sh
 # Author: Javier Quilez (GitHub: jaquol)
-# Goal: prepares the SampleSheet.csv file required by bcl2fastq
+# Goal: prepares the SampleSheet.csv file required by bcl2fastq using the metadata
 #==================================================================================================
 
 
@@ -16,8 +16,8 @@
 #==================================================================================================
 
 # variables
-samples="064cf0f28_be2f5f693 CAR_22 CAR_23 CAR_24 dc3a1e069_be2f5f693 fc3e8b36a_8654297db fc3e8b36a_ba68d4402 FPR_17 FPR_18 FPR_23_1 FPR_23_2 rf_090_01_01_chipseq yc_022_01_01_chipseq"
-run_id=171020_NS500645_0119_AHKMFMBGX3_RUN114_4DG6
+samples="ALA_10 ALA_11 ALA_12 ALA_13 ALA_14 ALA_15 ALA_16 ALA_17 e22e868a9_efcbc504e e22e868a9_06d870132 c133e90d3_06d870132 MBJ_1 MBJ_2 MBJ_3 MBJ_4"
+run_id=171116_NS500645_0123_AHYM3TBGX2_RUN118_MM9
 project=4DGenome
 
 # paths
@@ -34,6 +34,9 @@ ofile=SampleSheet.csv
 #==================================================================================================
 # COMMANDS
 #==================================================================================================
+
+# download metadata and update database
+$io_metadata -m download_input_metadata
 
 # header
 echo '[Data]' > $ofile

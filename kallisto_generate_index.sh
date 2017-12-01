@@ -16,7 +16,7 @@
 # Variables 
 process="kallisto_generate_index"
 species="homo_sapiens"
-version="hg38_pirnas"
+version="hg38_snomirnas"
 
 # Paths 
 if [[ $version == "hg19" ]]; then
@@ -35,6 +35,11 @@ elif [[ $version == "hg38_trnas" ]]; then
 elif [[ $version == "hg38_pirnas" ]]; then
 	simple_version=`echo $version |cut -f1 -d'_'`
 	transcripts_fasta=$HOME/assemblies/$species/$simple_version/pirna_cluster_db/$version.fa.gz
+	KALLISTO=$HOME/assemblies/$species/$simple_version/kallisto_index
+	index=$KALLISTO/kallisto_${species}_$version.index
+elif [[ $version == "hg38_snomirnas" ]]; then
+	simple_version=`echo $version |cut -f1 -d'_'`
+	transcripts_fasta=$HOME/assemblies/$species/$simple_version/ucsc/$version.fa.gz
 	KALLISTO=$HOME/assemblies/$species/$simple_version/kallisto_index
 	index=$KALLISTO/kallisto_${species}_$version.index
 fi
@@ -80,3 +85,4 @@ echo $job_cmd >> $job_file
 # Submit job
 chmod a+x $job_file 
 qsub < $job_file
+

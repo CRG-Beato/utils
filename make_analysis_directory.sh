@@ -36,7 +36,7 @@ if [[ $project == "4DGenome" ]]; then
 	notedown $md > $ipynb
 	rm -f $md
 else
-	ANALYSIS=/users/GR/mb/jquilez/projects/$project/analysis/${my_date}_${analysis}
+	ANALYSIS=/users/mbeato/projects/projects/$project/analysis/${my_date}_${analysis}
 	mkdir -p $ANALYSIS/{scripts,tables,figures,data}
 	md=$ANALYSIS/$directory_name.md
 	ipynb=$ANALYSIS/$directory_name.ipynb
@@ -44,7 +44,7 @@ else
 	rm -f $ipynb
 	echo "# Introduction" >> $md
 	echo " " >> $md
-	echo -e "\n**paths are relative to /users/GR/mb/jquilez**\n\n" >> $md
+	echo -e "\n**paths are relative to /users/mbeato/projects**\n\n" >> $md
 	notedown $md > $ipynb
 	rm -f $md
 fi

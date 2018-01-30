@@ -23,7 +23,7 @@
 process="star_generate_genome1_sjdb"
 species="homo_sapiens"
 version="hg38_mmtv"
-read_length=125
+read_length=54
 fasta_name=${version}_chr1-22XYMUn
 
 # Paths

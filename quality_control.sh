@@ -22,12 +22,12 @@
 #==================================================================================================
 
 # variables
-samples="2eb5ca0d0_9109053af"
+samples="gv_141_01_03_rnaseq gv_142_01_03_rnaseq fd_020_01_03_rnaseq fd_021_01_03_rnaseq fd_022_01_03_rnaseq fd_023_01_03_rnaseq"
 process=quality_control
-project=4DGenome
-release_date=2017-02-01
-data_type=hic
-analysis=2017-02-02_run_hic-16.05_sequencing_2017-02-01_unit
+project=misc
+release_date=2018-01-23
+data_type=rnaseq
+analysis=2018-01-23_run_rnaseq-16.06_sequencing_old_crg
 sequencing_type="PE"
 integrate_metadata="yes"
 
@@ -37,9 +37,9 @@ if [[ $project == "4DGenome" ]]; then
 	ANALYSIS=/users/project/4DGenome/analysis/$analysis
 	io_metadata=/users/project/4DGenome/utils/io_metadata.sh
 else
-	IODIR=/users/GR/mb/jquilez/data/$data_type/raw/$release_date
-	ANALYSIS=/users/GR/mb/jquilez/projects/$project/analysis/$analysis	
-	io_metadata=/users/GR/mb/jquilez/utils/io_metadata.sh
+	IODIR=/users/mbeato/projects/data/$data_type/raw/$release_date
+	ANALYSIS=/users/mbeato/projects/projects/$project/analysis/$analysis	
+	io_metadata=/users/mbeato/projects/utils/io_metadata.sh
 fi
 FASTQC=$IODIR/fastqc
 JOB_CMD=$ANALYSIS/job_cmd

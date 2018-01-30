@@ -45,8 +45,8 @@ while getopts ":m:s:p:t:a:v:u:" opt; do
 done
 
 # paths 
-db=/users/GR/mb/jquilez/data/beato_lab_metadata.db
-io_metadata=/users/GR/mb/jquilez/utils/io_metadata.py
+db=/users/mbeato/projects/data/beato_lab_metadata.db
+io_metadata=/users/mbeato/projects/utils/io_metadata.py
 
 
 
@@ -118,12 +118,14 @@ download_input_metadata() {
 	# download input metadata from an online Google spreadsheet
 
 	url="goo.gl/vjQ5sf"
-	spreadsheet=/users/GR/mb/jquilez/data/tmp_downloaded_metadata.txt
+	spreadsheet=/users/mbeato/projects/data/tmp_downloaded_metadata.txt
 
 	# Get spreadsheet --make sure to:
 	# (1) publish the spreadsheet as shown here: http://onetipperday.blogspot.com.es/2014/01/access-google-spreadsheet-directly-in.html
 	# (2) this is the link to the most updated spreadsheet
 	wget --no-check-certificate -q -O - $url > $spreadsheet
+#	cat $spreadsheet
+#	exit
 
 	# update metada and delete intermediate file
 	#cat $spreadsheet
@@ -136,7 +138,7 @@ quality_control_raw_reads() {
 	which_read=$1
 
 	# FastQC report
-	fastqc_data=/users/GR/mb/jquilez/data/*/raw/*/fastqc/$sample_id*${which_read}_fastqc/fastqc_data.txt
+	fastqc_data=/users/mbeato/projects/data/*/raw/*/fastqc/$sample_id*${which_read}_fastqc/fastqc_data.txt
 	python $io_metadata $db quality_control_raw_reads $sample_id "${which_read^^}_PATH_FASTQC_REPORT" $fastqc_data
 	
 	# FastQC version

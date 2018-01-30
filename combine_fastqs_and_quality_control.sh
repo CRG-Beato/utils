@@ -30,8 +30,8 @@ if [[ $project == "4DGenome" ]]; then
 	IODIR=/users/project/4DGenome/sequencing/$release_date
 	ANALYSIS=/users/project/4DGenome/analysis/$analysis
 else
-	IODIR=/users/GR/mb/jquilez/data/$data_type/raw/$release_date
-	ANALYSIS=/users/GR/mb/jquilez/projects/$project/analysis/$analysis	
+	IODIR=/users/mbeato/projects/data/$data_type/raw/$release_date
+	ANALYSIS=/users/mbeato/projects/projects/$project/analysis/$analysis	
 fi
 FASTQC=$IODIR/fastqc
 JOB_CMD=$ANALYSIS/job_cmd
@@ -39,7 +39,7 @@ JOB_OUT=$ANALYSIS/job_out
 mkdir -p $FASTQC
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
-fastqc=/users/GR/mb/jquilez/software/FastQC/fastqc
+fastqc=/users/mbeato/projects/software/FastQC/fastqc
 unzip=`which unzip`
 
 # Cluster parameters

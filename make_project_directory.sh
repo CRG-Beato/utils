@@ -14,23 +14,21 @@ project=$1
 
 # check variables are passed as script parameters
 if [ -n "$project" ]; then
-	PROJECT=/users/GR/mb/jquilez/projects/$project
+	PROJECT=/users/mbeato/projects/projects/$project
 	if [ ! -d $PROJECT ]; then
 		# make directories
 		mkdir -p $PROJECT/{data,analysis}
 		# make project notebook
-		md=$PROJECT/project_notebook_${project}.md
+		md=$PROJECT/README.md
 		rm -f $md
 		echo "# $project" >> $md
-		echo `printf '%100s\n' | tr ' ' -` >> $md
 		echo -e "\n**objective: ...**" >> $md
-		echo -e "\n**paths are relative to /users/GR/mb/jquilez**\n\n" >> $md
+		echo -e "\n**paths are relative to /users/mbeato/projects**\n\n" >> $md
 		echo -e "\nproject directory created at $PROJECT\n"
-		echo "# Project directory stucture" >> $md
-		echo `printf '%100s\n' | tr ' ' -` >> $md
+		echo "## Project directory stucture" >> $md
 		echo >> $md
 		echo "- analysis: subdirectories for the different analyses, named as <date_of_analysis>_<analysis_name>" >> $md
-		echo "- data: input data that are not sample-specific (which are are at /users/GR/mb/jquilez/)" >> $md
+		echo "- data: input data that are not sample-specific (which are are at /users/mbeato/projects/)" >> $md
 		echo "- project_notebook_<project_name>.md: this file..." >> $md
 		echo >> $md
 		echo >> $md

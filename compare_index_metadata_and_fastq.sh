@@ -15,7 +15,7 @@
 #==================================================================================================
 
 # variables
-samples="ALA_1 ALA_2 ALA_3 ALA_10 ALA_11 ALA_12 ALA_13 ALA_14 ALA_15 ALA_16 ALA_17"
+samples="e22e868a9_9a5e4125b c133e90d3_9a5e4125b MMD_2 dc3a1e069_bedc0fea5 dc3a1e069_40c81ae28 9a7c4a68d_bedc0fea5 9a7c4a68d_40c81ae28 dc3a1e069_26c369b7b 9a7c4a68d_26c369b7b 7824bad60_26c369b7b"
 project=4DGenome
 
 
@@ -43,7 +43,7 @@ for s in $samples; do
 	else
 
 		# input dir
-		IDIR=/users/GR/mb/jquilez
+		IDIR=/users/mbeato/projects
 
 		# script to extract metadata
 		io_metadata=$IDIR/utils/io_metadata.sh

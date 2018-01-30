@@ -17,7 +17,7 @@
 #==================================================================================================
 
 # variables
-samples="ag_011_01_03_chipseq ag_011_02_03_chipseq ag_012_01_03_chipseq ag_012_02_03_chipseq ag_013_01_03_chipseq ag_013_02_03_chipseq ag_014_01_03_chipseq ag_014_02_03_chipseq"
+samples="ag_011_01_03_chipseq ag_011_02_03_chipseq ag_012_01_03_chipseq ag_012_02_03_chipseq ag_013_01_03_chipseq ag_013_02_03_chipseq ag_014_01_03_chipseq ag_014_02_03_chipseq ag_007_01_01_chipseq ag_008_01_01_chipseq ag_009_01_01_chipseq fd_012_01_01_chipseq"
 data_type=chipseq
 call_peaks_mode=with_control
 project=argentina
@@ -47,7 +47,7 @@ for s in $samples; do
 	if [[ $project == "4DGenome" ]]; then
 		io_metadata=/users/project/4DGenome/utils/io_metadata.sh
 	else
-		io_metadata=/users/GR/mb/jquilez/utils/io_metadata.sh
+		io_metadata=/users/mbeato/projects/utils/io_metadata.sh
 	fi
 
 	# sample name & metadata
@@ -62,11 +62,11 @@ for s in $samples; do
 	species=`$io_metadata -m get_from_metadata -s $s -t input_metadata -a SPECIES`
 	if [[ $species == "Homo_sapiens" ]]; then
 		version=hg38_mmtv
-		chrom_sizes=/users/GR/mb/jquilez/assemblies/homo_sapiens/$version/ucsc/${version}_chr1-22XYMUn.chrom.sizes
+		chrom_sizes=/users/mbeato/projects/assemblies/homo_sapiens/$version/ucsc/${version}_chr1-22XYMUn.chrom.sizes
 		db=hg38
 	elif [[ $species == "Mus_musculus" ]]; then
 		version=mm10
-		chrom_sizes=/users/GR/mb/jquilez/assemblies/mus_musculus/$version/ucsc/${version}_chr1-19XYMUn.chrom.sizes
+		chrom_sizes=/users/mbeato/projects/assemblies/mus_musculus/$version/ucsc/${version}_chr1-19XYMUn.chrom.sizes
 		db=mm10
 	fi
 
@@ -85,9 +85,9 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/open_access/$project
+		ODIR=/users/mbeato/projects/file_transfer/open_access/$project
 		mkdir -p $ODIR
 		obw=$ODIR/$fname
 
@@ -106,9 +106,9 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_peaks.narrowPeak
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_peaks.narrowPeak
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/open_access/$project
+		ODIR=/users/mbeato/projects/file_transfer/open_access/$project
 		mkdir -p $ODIR
 		obed=$ODIR/$fname
 

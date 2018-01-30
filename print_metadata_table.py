@@ -16,7 +16,7 @@ import dataset
 import pandas as pd 
 
 # paths and variables
-metadata = '/users/GR/mb/jquilez/data/beato_lab_metadata.db'
+metadata = '/users/mbeato/projects/data/beato_lab_metadata.db'
 tab_name = sys.argv[1]
 sample_id = sys.argv[2]
 attribute = sys.argv[3]

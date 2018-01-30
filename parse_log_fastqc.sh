@@ -27,9 +27,9 @@ if [[ $project == "4DGenome" ]]; then
 	ANALYSIS=/users/project/4DGenome/analysis/$analysis
 	FASTQC=/users/project/4DGenome/sequencing/$release_date/fastqc
 else
-	IODIR=/users/GR/mb/jquilez/data/$data_type/raw/$release_date
-	ANALYSIS=/users/GR/mb/jquilez/projects/$project/analysis/$analysis
-	FASTQC=/users/GR/mb/jquilez/data/$data_type/raw/$release_date/fastqc 
+	IODIR=/users/mbeato/projects/data/$data_type/raw/$release_date
+	ANALYSIS=/users/mbeato/projects/projects/$project/analysis/$analysis
+	FASTQC=/users/mbeato/projects/data/$data_type/raw/$release_date/fastqc 
 fi
 mkdir -p $ANALYSIS/tables
 otab=$ANALYSIS/tables/fastq_quality_control_stats_fastqc.txt

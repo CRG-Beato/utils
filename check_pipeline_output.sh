@@ -34,7 +34,7 @@ echo $sample
 if [[ "$pipeline" == 'chipseq' ]]; then
 
 	# paths 
-	SAMPLE=$HOME/data/chipseq/samples/$sample
+	SAMPLE=$HOME/data/*/samples/$sample
 	ilog=$HOME/pipelines/$pipeline-16.04/job_out/job_${sample}_${run_on}*out
 	ibam=$SAMPLE/alignments/bwa/*/*/${sample}_sorted_filtered.bam
 	ibai=$SAMPLE/alignments/bwa/*/*/${sample}_sorted_filtered.bam.bai

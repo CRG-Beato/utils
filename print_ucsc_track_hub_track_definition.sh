@@ -24,14 +24,15 @@
 # data_type = hic  & track_type = tads 
 # data_type = atactseq & track_type = profiles 
 # data_type = atactseq & track_type = peaks_macs2_without_control 
+# data_type = mnaseseq & track_type = profiles 
 # data_type =  & track_type = 
 
 # variables
-project=alioutas
-samples="al_001_01_01_chipseq al_002_01_01_chipseq al_001_02_01_chipseq al_002_02_01_chipseq al_003_01_01_chipseq al_004_01_01_chipseq al_005_01_01_chipseq"
+project=ycuartero
+samples="yc_002_01_01_chipseq"
 data_type=chipseq
-track_type=peaks_macs2
-version=hg38_mmtv
+track_type=peaks_macs2_without_control
+version=mm10
 peak_caller=macs2
 sequencing_type=single_end
 autoScale=off
@@ -42,7 +43,7 @@ browser_position="chr2:11,647,074-11,810,080"
 visibility=2
 
 # paths
-print_metadata_table=/users/GR/mb/jquilez/utils/print_metadata_table.py
+print_metadata_table=/users/mbeato/projects/utils/print_metadata_table.py
 python=`which python`
 bed2bb=`which bedToBigBed`
 chrom_sizes=$HOME/assemblies/homo_sapiens/$version/ucsc/${version}_chr1-22XYMUn.chrom.sizes
@@ -114,7 +115,7 @@ for s in $samples; do
 	else
 
 		# script to access the Beato Lab metadata
-		io_metadata=/users/GR/mb/jquilez/utils/io_metadata.sh
+		io_metadata=/users/mbeato/projects/utils/io_metadata.sh
 
 		# get metadata
 		sample_name=`$io_metadata -m get_from_metadata -s $s -t input_metadata -a SAMPLE_NAME`
@@ -185,14 +186,14 @@ for s in $samples; do
 
 			echo -e "\t\ttrack ${s}_profile_strand1"
 			echo -e "\t\tparent ${s}_profile"
-			echo -e "\t\tbigDataUrl ../../$data_type/samples/$s/$track_type/$version/$sequencing_type/${s}_unique_multiple_strand1_rpm.bw"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type/${s}_unique_multiple_strand1_rpm.bw"
 			echo -e "\t\ttype bigWig"
   	    	echo -e "\t\tcolor 0,128,0"
   	    	echo
 
 			echo -e "\t\ttrack ${s}_profile_strand2"
 			echo -e "\t\tparent ${s}_profile"
-			echo -e "\t\tbigDataUrl ../../$data_type/samples/$s/$track_type/$version/$sequencing_type/${s}_unique_multiple_strand2_rpm.bw"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type/${s}_unique_multiple_strand2_rpm.bw"
 			echo -e "\t\ttype bigWig"
 			echo -e "\t\tnegateValues on"
   	    	echo -e "\t\tcolor 0,128,0"
@@ -219,6 +220,39 @@ for s in $samples; do
 			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks (without control)"
 			echo -e "\t\ttype bigBed"
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new"
+			echo
+
+		elif [[ $composite_track == "mnaseseq_profiles" ]]; then 
+
+			echo -e "\t\ttrack ${s}_profile"
+			echo -e "\t\tparent $composite_track"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type/$s.rpm.bw"
+			echo -e "\t\tshortLabel $sample_name"
+			echo -e "\t\tlongLabel $sample_name ($s) RPM profile"
+			echo -e "\t\ttype bigWig"
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new"
+			echo
+
+		elif [[ $composite_track == "chipseq_peaks_macs2_without_control" ]]; then 
+
+			echo -e "\t\ttrack ${s}_peaks_macs2"
+			echo -e "\t\tparent chipseq_peaks_macs2"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/peaks/$peak_caller/$version/sample_alone/$sequencing_type/${s}_peaks.bb"
+			echo -e "\t\tshortLabel $sample_name"
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks (without control)"
+			echo -e "\t\ttype bigBed"
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new antibody=${target_protein_new,,}"
+			echo
+
+		elif [[ $composite_track == "dnaseq_peaks_macs2_without_control" ]]; then 
+
+			echo -e "\t\ttrack ${s}_peaks_macs2"
+			echo -e "\t\tparent chipseq_peaks_macs2"
+			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/peaks/$peak_caller/$version/sample_alone/$sequencing_type/${s}_peaks.bb"
+			echo -e "\t\tshortLabel $sample_name"
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks (without control)"
+			echo -e "\t\ttype bigBed"
+			echo -e "\t\tsubGroups cell_line=$cell_line_new"
 			echo
 
 		fi

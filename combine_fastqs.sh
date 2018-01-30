@@ -16,12 +16,12 @@
 #==================================================================================================
 
 # variables
-samples="dc3a1e069_a1dad1500 4d17b2205_a1dad1500 b1913e6c1_a1dad1500 dd7dbfbbf_a1dad1500 FPR_13 FPR_14 FPR_15 FPR_16 8d2ac542f_a4f043907 8d2ac542f_e6ebe379a e22e868a9_a4f043907 e22e868a9_e6ebe379a"
+samples="CAR_25 CAR_26 CAR_27 MMD_3 PFM_7 PFM_8 PFM_9 55205cae2_8d134038b f5082f94c_8d134038b"
 process=combine_fastqs
 project=4DGenome
-release_date=2017-02-27
+release_date=2018-01-16
 data_type='hic'
-analysis=2017-02-28_run_hic-16.05_sequencing_2017-02-27_unit
+analysis=2018-01-17_run_hic-16.05_sequencing_2018-01-16_unit
 sequencing_type="PE"
 
 # paths
@@ -29,8 +29,8 @@ if [[ $project == "4DGenome" ]]; then
 	IODIR=/users/project/4DGenome/sequencing/$release_date
 	ANALYSIS=/users/project/4DGenome/analysis/$analysis
 else
-	IODIR=/users/GR/mb/jquilez/data/$data_type/raw/$release_date
-	ANALYSIS=/users/GR/mb/jquilez/projects/$project/analysis/$analysis	
+	IODIR=/users/mbeato/projects/data/$data_type/raw/$release_date
+	ANALYSIS=/users/mbeato/projects/projects/$project/analysis/$analysis	
 fi
 JOB_CMD=$ANALYSIS/job_cmd
 JOB_OUT=$ANALYSIS/job_out

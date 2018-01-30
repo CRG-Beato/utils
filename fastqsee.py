@@ -73,7 +73,25 @@ def get_fastqc_directories(data_type, step, samples):
                 IDIR = '%s/data/hic/samples/%s/fastqs_processed/trimmomatic/*/%s_read*_fastqc' % labels
                 _ = glob.glob(IDIR)
 
-            fastqc_dirs = fastqc_dirs + _
+        else:
+        
+            if step == 'raw':
+            
+                MOUNT = '/Volumes/users-GR-mb-jquilez'
+                labels = (MOUNT, data_type, s)
+                IDIR = '%s/data/%s/raw/*/fastqc/%s_read*_fastqc' % labels
+                _ = glob.glob(IDIR)
+
+
+            elif step == 'processed':
+
+                MOUNT = '/Volumes/users-GR-mb-jquilez'
+                labels = (MOUNT, data_type, s, s)
+                IDIR = '%s/data/%s/samples/%s/fastqs_processed/trimmomatic/*/%s_read*_fastqc' % labels
+                _ = glob.glob(IDIR)
+
+        fastqc_dirs = fastqc_dirs + _
+
 
     return sorted(fastqc_dirs)
 

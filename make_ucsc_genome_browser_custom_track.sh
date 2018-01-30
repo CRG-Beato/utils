@@ -25,14 +25,15 @@
 # data_type = hic  & track_type = tads 
 # data_type = atactseq & track_type = profiles 
 # data_type = atactseq & track_type = peaks_macs2_without_control 
+# data_type = mnaseseq & track_type = profiles 
 # data_type =  & track_type = 
 
 
 # variables
-samples="al_001_01_01_chipseq al_002_01_01_chipseq al_001_02_01_chipseq al_002_02_01_chipseq al_003_01_01_chipseq al_004_01_01_chipseq al_005_01_01_chipseq"
+samples="ps_029_02_01_chipseq ps_031_01_01_chipseq ps_032_01_01_chipseq"
 data_type=chipseq
 track_type=peaks_macs2
-version=hg38_mmtv
+version=hg19
 sequencing_type=single_end
 autoScale=off
 alwaysZero=on
@@ -43,7 +44,7 @@ visibility=2
 
 # paths
 # script to access the Beato lab metadata
-print_metadata_table=/users/GR/mb/jquilez/utils/print_metadata_table.py
+print_metadata_table=/users/mbeato/projects/utils/print_metadata_table.py
 # script to access the 4DGenome metadata
 io_metadata=/users/project/4DGenome/utils/io_metadata.sh
 python=`which python`
@@ -70,9 +71,9 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/with_control/$sequencing_type
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_peaks.narrowPeak
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_peaks.narrowPeak
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		obed=$ODIR/$fname
 
@@ -115,9 +116,9 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/sample_alone/$sequencing_type
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*.narrowPeak
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*.narrowPeak
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		obed=$ODIR/$fname
 
@@ -144,6 +145,13 @@ for s in $samples; do
 		# add file content while skipping calls in the mmtv_luciferase contig
 		grep -v 'mmtv_luciferase\|chrUn' $ifile >> $obed
 
+		# additionally convert narrowPeak to bigBed
+		obb=`echo $obed |sed "s/narrowPeak/bb/g"`
+		tbed=$ODIR/tmp.bed
+		grep -v 'track\|browser' $obed |awk '{OFS="\t"; print $1,$2,$3,$4,int($9),$6,$7,$8,$9,$10}' > $tbed
+		$bed2bb $tbed $chrom_sizes $obb -as=$narrow_peak_specification -type=bed6+4
+		rm $tbed
+
 		echo $url
 		echo
 
@@ -151,8 +159,8 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/peaks/zerone/$version/with_control
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_zerone.txt
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_zerone.txt
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		obed=$ODIR/${s}.bed
 
@@ -193,9 +201,9 @@ for s in $samples; do
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type
 
 		# input/output filez/directories
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		ofile=$ODIR/$fname
 
@@ -231,9 +239,9 @@ for s in $samples; do
 		sample_name=`$python $print_metadata_table input_metadata $s SAMPLE_NAME`
 
 		# input/output filez/directories
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_unique_multiple_strand1_rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_unique_multiple_strand1_rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		ofile=$ODIR/$fname
 
@@ -257,9 +265,9 @@ for s in $samples; do
 		cp $ifile $ofile
 
 		# input/output filez/directories
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_unique_multiple_strand2_rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_unique_multiple_strand2_rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		ofile=$ODIR/$fname
 
@@ -288,7 +296,7 @@ for s in $samples; do
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/downstream/$version
 		ifile=/users/project/4DGenome_no_backup/$SHARED_PATH/${s}_tads_allchr.bed.gz
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		fname=`basename $ifile |sed "s/.bed.gz//g"`
 		obed=$ODIR/$fname.bed
@@ -324,7 +332,7 @@ for s in $samples; do
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/downstream/$version
 		ifile=/users/project/4DGenome_no_backup/$SHARED_PATH/${s}_ev_100kb.tsv.gz
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		fname=`basename $ifile |sed "s/.tsv.gz//g"`
 		obed=$ODIR/$fname.bed
@@ -365,9 +373,9 @@ for s in $samples; do
 		sample_name=`$python $print_metadata_table input_metadata $s SAMPLE_NAME`
 
 		# input/output filez/directories
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_unique_multiple_strand1_rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_unique_multiple_strand1_rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		ofile=$ODIR/$fname
 
@@ -391,9 +399,9 @@ for s in $samples; do
 		cp $ifile $ofile
 
 		# input/output filez/directories
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_unique_multiple_strand2_rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_unique_multiple_strand2_rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		ofile=$ODIR/$fname
 
@@ -423,9 +431,9 @@ for s in $samples; do
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type
 
 		# input/output filez/directories
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		ofile=$ODIR/$fname
 
@@ -455,9 +463,9 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/sample_alone/$sequencing_type
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*.narrowPeak
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*.narrowPeak
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		obed=$ODIR/$fname
 
@@ -493,6 +501,83 @@ for s in $samples; do
 
 		echo $url
 		echo
+
+	elif [[ $track_type == "peaks_macs2_without_control" && $data_type == "dnaseq" ]]; then
+
+		# define paths
+		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/sample_alone/$sequencing_type
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*.narrowPeak
+		fname=`basename $ifile`
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+		obed=$ODIR/$fname
+
+		# convert SAMPLE_ID to SAMPLE_NAME (the latter is more meaningful biologically)
+		sample_name=`$python $print_metadata_table input_metadata $s SAMPLE_NAME`
+
+		# make UCSC Genome Browser custom track header
+		if [[ $version == 'hg38_mmtv' ]]; then
+			db=hg38
+		fi
+		url="http://public-docs.crg.es/mbeato/jquilez/$SHARED_PATH/$fname"	
+		cmd="track type=narrowPeak \
+				name='${sample_name} peaks (macs2) without control' \
+				description='$sample_name ($s), peaks (MACS2 without control)' \
+				visibility=1 \
+				useScore=1 \
+				db=$db \
+				url=$url \
+				color=26,27,27"
+		echo $cmd > $obed
+		cmd="browser position $browser_position"
+		echo $cmd >> $obed
+
+		# add file content while skipping calls in the mmtv_luciferase contig
+		grep -v 'mmtv_luciferase\|chrUn' $ifile >> $obed
+
+		# additionally convert narrowPeak to bigBed
+		obb=`echo $obed |sed "s/narrowPeak/bb/g"`
+		tbed=$ODIR/tmp.bed
+		grep -v 'track\|browser' $obed |awk '{OFS="\t"; print $1,$2,$3,$4,int($9),$6,$7,$8,$9,$10}' > $tbed
+		$bed2bb $tbed $chrom_sizes $obb -as=$narrow_peak_specification -type=bed6+4
+		rm $tbed
+
+		echo $url
+		echo
+
+	elif [[ $track_type == "profiles" ]] && [[ $data_type == "mnaseseq" ]]; then
+
+		#SHARED_PATH=data/$data_type/samples/$s/profiles/$version
+		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type
+
+		# input/output filez/directories
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
+		fname=`basename $ifile`
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+		ofile=$ODIR/$fname
+
+		# convert SAMPLE_ID to SAMPLE_NAME (the latter is more meaningful biologically)
+		sample_name=`$python $print_metadata_table input_metadata $s SAMPLE_NAME`
+
+		# UCSC Genome Browser custom track description
+		url="http://public-docs.crg.es/mbeato/jquilez/$SHARED_PATH/$fname"
+		cmd="track type=bigWig \
+				name='${sample_name} rpms' \
+				description='$sample_name, reads per million (RPM)'
+				bigDataUrl=$url \
+				alwaysZero=$alwaysZero \
+				visibility=$visibility \
+				autoScale=$autoScale \
+				viewLimits=$viewLimits \
+				maxHeightPixels=$maxHeightPixels \
+				color=204,102,0"
+		echo $cmd
+		echo "browser position $browser_position"
+		echo		
+
+		# copy data to the `file_transfer` directory, which is accessible for the UCSC Genome browser
+		cp $ifile $ofile
 
 	fi 
 

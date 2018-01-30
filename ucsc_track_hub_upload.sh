@@ -21,10 +21,10 @@
 #==================================================================================================
 
 # variables
-samples="gv_081_01_01_dnaseseq gv_082_01_01_dnaseseq gv_083_01_01_dnaseseq"
-data_type=dnaseseq
-call_peaks_mode=with_control
-project=gvicent
+samples="rz_008_02_01_rnaseq"
+data_type=rnaseq
+call_peaks_mode=
+project=rzaurin
 
 # paths
 python=`which python`
@@ -54,7 +54,7 @@ for s in $samples; do
 	if [[ $project == "4DGenome" ]]; then
 		io_metadata=/users/project/4DGenome/utils/io_metadata.sh
 	else
-		io_metadata=/users/GR/mb/jquilez/utils/io_metadata.sh
+		io_metadata=/users/mbeato/projects/utils/io_metadata.sh
 	fi
 
 	# sample name
@@ -90,11 +90,11 @@ for s in $samples; do
 	species=`$io_metadata -m get_from_metadata -s $s -t input_metadata -a SPECIES`
 	if [[ $species == "Homo_sapiens" ]]; then
 		version=hg38_mmtv
-		chrom_sizes=/users/GR/mb/jquilez/assemblies/homo_sapiens/$version/ucsc/${version}_chr1-22XYMUn.chrom.sizes
+		chrom_sizes=/users/mbeato/projects/assemblies/homo_sapiens/$version/ucsc/${version}_chr1-22XYMUn.chrom.sizes
 		db=hg38
 	elif [[ $species == "Mus_musculus" ]]; then
 		version=mm10
-		chrom_sizes=/users/GR/mb/jquilez/assemblies/mus_musculus/$version/ucsc/${version}_chr1-19XYMUn.chrom.sizes
+		chrom_sizes=/users/mbeato/projects/assemblies/mus_musculus/$version/ucsc/${version}_chr1-19XYMUn.chrom.sizes
 		db=mm10
 	fi
 	# target protein (only for non-4DGenome projects)
@@ -117,9 +117,9 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		obw=$ODIR/$fname
 
@@ -141,7 +141,6 @@ for s in $samples; do
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		fi	
-		#echo >> $composite_track.txt
 
 
 		# peaks coordinates with -log10(FDR q-value)
@@ -149,8 +148,8 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_peaks.narrowPeak
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_peaks.narrowPeak
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 
 		# convert to bigWig
@@ -180,6 +179,38 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		fi	
 
+
+		# alignments
+		echo "... alignments profiles"
+
+		# define paths
+		SHARED_PATH=data/$data_type/samples/$s/alignments/bwa/$version/$sequencing_type_long
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_sorted_filtered.bam
+		fname=`basename $ifile`
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+		obam=$ODIR/$fname
+
+		# copy data to the `file_transfer` directory
+		cp $ifile $obam
+		cp $ifile.bai $ODIR
+
+		# print track hub definitions
+		track_type=alignments
+		composite_track=${data_type}_$track_type
+		echo -e >> $composite_track.txt
+		echo -e "\t\ttrack ${s}_alignments" >> $composite_track.txt
+		echo -e "\t\tparent $composite_track" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/bwa/$version/$sequencing_type_long/${s}_sorted_filtered.bam" >> $composite_track.txt
+		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
+		echo -e "\t\tlongLabel $sample_name ($s) alignments BAM" >> $composite_track.txt
+		echo -e "\t\ttype bam" >> $composite_track.txt
+		if [[ $project != "4DGenome" ]]; then
+			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		else
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		fi	
+
 		echo
 
 
@@ -196,9 +227,9 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		obw=$ODIR/$fname
 
@@ -230,8 +261,8 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_peaks.narrowPeak
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_peaks.narrowPeak
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 
 		# convert to bigWig
@@ -260,6 +291,40 @@ for s in $samples; do
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		fi
+
+
+		# alignments
+		echo "... alignments profiles"
+
+		# define paths
+		SHARED_PATH=data/$data_type/samples/$s/alignments/bwa/$version/$sequencing_type_long
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_sorted_filtered.bam
+		fname=`basename $ifile`
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+		obam=$ODIR/$fname
+
+		# copy data to the `file_transfer` directory
+		cp $ifile $obam
+		cp $ifile.bai $ODIR
+
+		# print track hub definitions
+		track_type=alignments
+		composite_track=${data_type}_$track_type
+		echo -e >> $composite_track.txt
+		echo -e "\t\ttrack ${s}_alignments" >> $composite_track.txt
+		echo -e "\t\tparent $composite_track" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/bwa/$version/$sequencing_type_long/${s}_sorted_filtered.bam" >> $composite_track.txt
+		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
+		echo -e "\t\tlongLabel $sample_name ($s) alignments BAM" >> $composite_track.txt
+		echo -e "\t\ttype bam" >> $composite_track.txt
+		if [[ $project != "4DGenome" ]]; then
+			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		else
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		fi	
+
+		echo
 
 
 
@@ -300,9 +365,9 @@ for s in $samples; do
 
 			# input/output filez/directories
 			SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
-			ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}_unique_multiple_${strand}_rpm.bw
+			ifile=/users/mbeato/projects/$SHARED_PATH/${s}_unique_multiple_${strand}_rpm.bw
 			fname=`basename $ifile`
-			ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+			ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 			mkdir -p $ODIR
 			ofile=$ODIR/$fname
 
@@ -319,8 +384,42 @@ for s in $samples; do
 			fi
 
 	   	    echo >> $composite_track.txt
-		
+
 		done
+
+
+		# alignments
+		echo "... alignments profiles"
+
+		# define paths
+		SHARED_PATH=data/$data_type/samples/$s/alignments/star/$version/$sequencing_type_long
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}.Aligned.sortedByCoord.out.bam
+		fname=`basename $ifile`
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		mkdir -p $ODIR
+		obam=$ODIR/$fname
+
+		# copy data to the `file_transfer` directory
+		cp $ifile $obam
+		cp $ifile.bai $ODIR
+
+		# print track hub definitions
+		track_type=alignments
+		composite_track=${data_type}_$track_type
+		echo -e >> $composite_track.txt
+		echo -e "\t\ttrack ${s}_alignments" >> $composite_track.txt
+		echo -e "\t\tparent $composite_track" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/star/$version/$sequencing_type_long/${s}.Aligned.sortedByCoord.out.bam" >> $composite_track.txt
+		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
+		echo -e "\t\tlongLabel $sample_name ($s) alignments BAM" >> $composite_track.txt
+		echo -e "\t\ttype bam" >> $composite_track.txt
+		if [[ $project != "4DGenome" ]]; then
+			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		else
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		fi	
+
+		echo
 
 
 
@@ -336,9 +435,9 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		obw=$ODIR/$fname
 
@@ -375,9 +474,9 @@ for s in $samples; do
 
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
-		ifile=/users/GR/mb/jquilez/$SHARED_PATH/${s}*rpm.bw
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/GR/mb/jquilez/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
 		mkdir -p $ODIR
 		obw=$ODIR/$fname
 

@@ -14,11 +14,11 @@ import dataset
 import time
 
 # connect to database
-ifile = '/users/GR/mb/jquilez/data/beato_lab_metadata.db'
+ifile = '/users/mbeato/projects/data/beato_lab_metadata.db'
 db = dataset.connect("sqlite:///%s" % ifile)
 
-date = time.strftime("%y-%m-%d")
-ODIR = '/users/GR/mb/jquilez/file_transfer/data/beato_lab_metadata_freezes/%s' % date
+date = time.strftime("%Y-%m-%d")
+ODIR = '/users/mbeato/projects/file_transfer/data/beato_lab_metadata_freezes/%s' % date
 if not os.path.exists(ODIR):
     os.makedirs(ODIR)
 

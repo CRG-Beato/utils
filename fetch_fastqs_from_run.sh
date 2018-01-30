@@ -15,18 +15,18 @@
 #==================================================================================================
 
 # variables 
-run_id=160920_NS500645_0067_AHMKGFBGXY_RUN63_MB24
-release_date=2016-09-20
+run_id=180116_NS500645_0125_AHCFHWBGX5_RUN120_4DG8
+release_date=2018-01-16
 scp=`which scp`
-project=alioutas
-data_type='chipseq'
+project=4DGenome
+data_type='hic'
 
 # paths
 IDIR=four-d@172.17.133.110:/home/four-d/Desktop/$run_id/Data/Intensities/BaseCalls
 if [[ $project == "4DGenome" ]]; then
 	ODIR=/users/project/4DGenome/sequencing/$release_date
 else
-	ODIR=/users/GR/mb/jquilez/data/$data_type/raw/$release_date
+	ODIR=/users/mbeato/projects/data/$data_type/raw/$release_date
 fi
 mkdir -p $ODIR
 

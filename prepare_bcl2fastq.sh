@@ -16,8 +16,8 @@
 #==================================================================================================
 
 # variables
-samples="ALA_10 ALA_11 ALA_12 ALA_13 ALA_14 ALA_15 ALA_16 ALA_17 e22e868a9_efcbc504e e22e868a9_06d870132 c133e90d3_06d870132 MBJ_1 MBJ_2 MBJ_3 MBJ_4"
-run_id=171116_NS500645_0123_AHYM3TBGX2_RUN118_MM9
+samples="CAR_25 CAR_26 CAR_27 MMD_3 PFM_7 PFM_8 PFM_9 55205cae2_8d134038b f5082f94c_8d134038b"
+run_id=180116_NS500645_0125_AHCFHWBGX5_RUN120_4DG8
 project=4DGenome
 
 # paths
@@ -63,7 +63,7 @@ done
 
 # copy to the corresponding run directory in the 4DGenome workstation
 ODIR=four-d@172.17.133.110:/home/four-d/Desktop
-scp -v $ofile $ODIR/${run_id}_SampleSheet.csv
+scp -v $ofile $ODIR/${run_id}/SampleSheet.csv
 
 rm -f $ofile
 

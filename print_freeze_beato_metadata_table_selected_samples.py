@@ -21,11 +21,11 @@ analysis = '2016-06-01_run_rnaseq-16.04_sequencing_2016-05-30_4dgu'
 table = 'quality_control_raw_reads'
 
 # connect to database
-ifile = '/users/GR/mb/jquilez/data/beato_lab_metadata.db'
+ifile = '/users/mbeato/projects/data/beato_lab_metadata.db'
 db = dataset.connect("sqlite:///%s" % ifile)
 
 # paths
-ODIR = '/users/GR/mb/jquilez/projects/%s/analysis/%s' % (project, analysis)
+ODIR = '/users/mbeato/projects/projects/%s/analysis/%s' % (project, analysis)
 
 # print table
 ttab = '%s/tables/tmp_%s.csv' % (ODIR, table)

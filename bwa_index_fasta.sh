@@ -15,9 +15,9 @@
 
 # Variables 
 process="bwa_index_fasta"
-species="homo_sapiens"
-version="hg38_mmtv"
-fasta_name=${version}_chr1-22XYM
+species="mus_musculus"
+version="mm10"
+fasta_name=${version}_chr1-19XYMUn
 
 # paths
 genome_fasta=$HOME/assemblies/$species/$version/ucsc/$fasta_name.fa

@@ -15,20 +15,20 @@
 #==================================================================================================
 
 # variables
-analysis=2016-06-27_run_hic-16.05_rao_samples_evidal
-download_date=2016-09-07
+analysis=2017-10-09_run_hic-16.05_external_samples_evidal
+download_date=2017-10-09
 process=fastq_dump_from_sra
 project='4DGenome'
 data_type='hic'
-table_name=sample_id_to_srr_batch_2016_09_07.txt
+table_name=sample_id_to_srr.txt
 
 # paths
 if [[ $project == '4DGenome' ]]; then
 	PROJECT=/users/project/4DGenome
 	ODIR=$PROJECT/sequencing/$download_date
 else
-	PROJECT=/users/GR/mb/jquilez/projects/$project
-	ODIR=/users/GR/mb/jquilez/data/$data_type/raw/$download_date
+	PROJECT=/users/mbeato/projects/projects/$project
+	ODIR=/users/mbeato/projects/data/$data_type/raw/$download_date
 fi
 mkdir -p $ODIR
 ANALYSIS=$PROJECT/analysis/$analysis
@@ -37,6 +37,7 @@ JOB_OUT=$ANALYSIS/job_out
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
 itab=$PROJECT/analysis/$analysis/tables/$table_name
+fastq_dump=`which fastq-dump`
 
 # Cluster parameters
 queue=long-sl65
@@ -74,7 +75,7 @@ while read line; do
 	sed -i 's/^\t//g' $job_file	
 
 	# download FASTQ and rename
-	job_cmd="fastq-dump $srr --split-files -O $ODIR -DQ '+' --gzip"
+	job_cmd="$fastq_dump $srr --split-files -O $ODIR -DQ '+' --gzip"
 	echo $job_cmd >> $job_file
 	job_cmd="mv $ODIR/${srr}_1.fastq.gz $ODIR/${sample_name}_read1.fastq.gz"
 	echo $job_cmd >> $job_file
@@ -85,5 +86,6 @@ while read line; do
 	chmod a+x $job_file
 	qsub < $job_file
 	sleep 10
-
+	#cat $job_file
+	
 done <$itab

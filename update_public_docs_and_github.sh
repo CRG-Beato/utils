@@ -24,9 +24,9 @@ analysis=$2
 tag=$3
 
 # paths
-PROJECTS=$HOME/projects
-FILE_TRANSFER=$HOME/file_transfer
-ipy_hide_input=$HOME/utils/ipy_hide_input
+PROJECTS=/users/mbeato/projects/projects
+FILE_TRANSFER=/users/mbeato/public-docs
+ipy_hide_input=/users/mbeato/projects/utils/ipy_hide_input
 
 
 
@@ -39,7 +39,7 @@ update_public_docs() {
 
 	p=$1
 	a=$2
-	echo "... updating http://public-docs.crg.es/mbeato/jquilez/$p/$a"
+	echo "... updating https://public_docs.crg.es/mbeato/public-docs/projects/$p/$a"
 
 	# make output directories
 	ODIR=$FILE_TRANSFER/projects/$p/$a
@@ -51,7 +51,6 @@ update_public_docs() {
 	for d in `ls $ANALYSIS |grep -v data`; do
 		cp -r $ANALYSIS/$d $ODIR
 	done
-	#cp -fr $PROJECTS/$p/analysis/$a/* $ODIR/
 
 	# copy project notebook to output directory
 	if [ -e $PROJECTS/$p/project_notebook* ]; then

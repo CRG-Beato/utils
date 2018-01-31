@@ -31,7 +31,7 @@ python=`which python`
 bed2bb=`which bedToBigBed`
 bedgraph_to_bigwig=`which bedGraphToBigWig`
 bedtools=`which bedtools`
-narrow_peak_specification=$HOME/assemblies/misc/narrowPeak.as
+narrow_peak_specification=/users/mbeato/projects/assemblies/misc/narrowPeak.as
 
 
 
@@ -119,7 +119,7 @@ for s in $samples; do
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
 		obw=$ODIR/$fname
 
@@ -132,7 +132,7 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_profile" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
 		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
 		echo -e "\t\tlongLabel $sample_name ($s) RPM profile" >> $composite_track.txt
 		echo -e "\t\ttype bigWig" >> $composite_track.txt
@@ -149,7 +149,7 @@ for s in $samples; do
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_peaks.narrowPeak
-		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
 
 		# convert to bigWig
@@ -165,7 +165,7 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_$track_type" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long/${s}_peaks.bw" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long/${s}_peaks.bw" >> $composite_track.txt
 		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
 		if [[ $call_peaks_mode == "sample_alone" ]]; then
 			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks without control, -log10(q-value)" >> $composite_track.txt
@@ -187,7 +187,7 @@ for s in $samples; do
 		SHARED_PATH=data/$data_type/samples/$s/alignments/bwa/$version/$sequencing_type_long
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_sorted_filtered.bam
 		fname=`basename $ifile`
-		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
 		obam=$ODIR/$fname
 
@@ -201,7 +201,7 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_alignments" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/bwa/$version/$sequencing_type_long/${s}_sorted_filtered.bam" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/$track_type/bwa/$version/$sequencing_type_long/${s}_sorted_filtered.bam" >> $composite_track.txt
 		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
 		echo -e "\t\tlongLabel $sample_name ($s) alignments BAM" >> $composite_track.txt
 		echo -e "\t\ttype bam" >> $composite_track.txt
@@ -229,7 +229,7 @@ for s in $samples; do
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
 		obw=$ODIR/$fname
 
@@ -244,7 +244,7 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_profile" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
 		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
 		echo -e "\t\tlongLabel $sample_name ($s) RPM profile" >> $composite_track.txt
 		echo -e "\t\ttype bigWig" >> $composite_track.txt
@@ -262,7 +262,7 @@ for s in $samples; do
 		# define paths
 		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_peaks.narrowPeak
-		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
 
 		# convert to bigWig
@@ -278,7 +278,7 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_$track_type" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long/${s}_peaks.bw" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long/${s}_peaks.bw" >> $composite_track.txt
 		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
 		if [[ $call_peaks_mode == "sample_alone" ]]; then
 			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks without control, -log10(q-value)" >> $composite_track.txt
@@ -300,7 +300,7 @@ for s in $samples; do
 		SHARED_PATH=data/$data_type/samples/$s/alignments/bwa/$version/$sequencing_type_long
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_sorted_filtered.bam
 		fname=`basename $ifile`
-		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
 		obam=$ODIR/$fname
 
@@ -314,7 +314,7 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_alignments" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/bwa/$version/$sequencing_type_long/${s}_sorted_filtered.bam" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/$track_type/bwa/$version/$sequencing_type_long/${s}_sorted_filtered.bam" >> $composite_track.txt
 		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
 		echo -e "\t\tlongLabel $sample_name ($s) alignments BAM" >> $composite_track.txt
 		echo -e "\t\ttype bam" >> $composite_track.txt
@@ -367,7 +367,7 @@ for s in $samples; do
 			SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
 			ifile=/users/mbeato/projects/$SHARED_PATH/${s}_unique_multiple_${strand}_rpm.bw
 			fname=`basename $ifile`
-			ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+			ODIR=/users/mbeato/public-docs/$SHARED_PATH
 			mkdir -p $ODIR
 			ofile=$ODIR/$fname
 
@@ -376,7 +376,7 @@ for s in $samples; do
 
 			echo -e "\t\ttrack ${s}_profile_${strand}" >> $composite_track.txt
 			echo -e "\t\tparent ${s}_profile" >> $composite_track.txt
-			echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/${s}_unique_multiple_${strand}_rpm.bw" >> $composite_track.txt
+			echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/${s}_unique_multiple_${strand}_rpm.bw" >> $composite_track.txt
 			echo -e "\t\ttype bigWig" >> $composite_track.txt
   	    	echo -e "\t\tcolor 0,128,0" >> $composite_track.txt
   	    	if [[ $strand == "strand2" ]]; then
@@ -395,7 +395,7 @@ for s in $samples; do
 		SHARED_PATH=data/$data_type/samples/$s/alignments/star/$version/$sequencing_type_long
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}.Aligned.sortedByCoord.out.bam
 		fname=`basename $ifile`
-		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
 		obam=$ODIR/$fname
 
@@ -409,7 +409,7 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_alignments" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/star/$version/$sequencing_type_long/${s}.Aligned.sortedByCoord.out.bam" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/$track_type/star/$version/$sequencing_type_long/${s}.Aligned.sortedByCoord.out.bam" >> $composite_track.txt
 		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
 		echo -e "\t\tlongLabel $sample_name ($s) alignments BAM" >> $composite_track.txt
 		echo -e "\t\ttype bam" >> $composite_track.txt
@@ -437,7 +437,7 @@ for s in $samples; do
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
 		obw=$ODIR/$fname
 
@@ -450,7 +450,7 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_profile" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
 		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
 		echo -e "\t\tlongLabel $sample_name ($s) RPM profile" >> $composite_track.txt
 		echo -e "\t\ttype bigWig" >> $composite_track.txt
@@ -476,7 +476,7 @@ for s in $samples; do
 		SHARED_PATH=data/$data_type/samples/$s/profiles/$version/$sequencing_type_long
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}*rpm.bw
 		fname=`basename $ifile`
-		ODIR=/users/mbeato/projects/file_transfer/$SHARED_PATH
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
 		obw=$ODIR/$fname
 
@@ -489,7 +489,7 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_profile" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl http://data:adenine&thymine@public-docs.crg.es/mbeato/jquilez/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/$track_type/$version/$sequencing_type_long/$s.rpm.bw" >> $composite_track.txt
 		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
 		echo -e "\t\tlongLabel $sample_name ($s) RPM profile" >> $composite_track.txt
 		echo -e "\t\ttype bigWig" >> $composite_track.txt

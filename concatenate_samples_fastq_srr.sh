@@ -3,11 +3,10 @@
 
 #==================================================================================================
 # Created on: 2018-05-24
-# Usage: ./fastq_dump_from_sra.sh
+# Usage: ./concatenate_samples_fastq_srr.sh
 # Author: JL Villanueva Cañas (GitHub: egenomics)
-# Goal: downloads FASTQ files from SRA (using one or several SRR code per sample) and convert into the desired sample id
+# Goal: concatenate FASTQ files from different SRR that belong to the same sample
 #==================================================================================================
-
 
 
 #==================================================================================================
@@ -17,7 +16,7 @@
 # variables
 analysis=2018-05-24_run_hic-16.05_2018-05-24_yannick_external
 download_date=2018-05-24
-process=fastq_dump_from_sra
+process=concatenate_fastq
 project='4DGenome'
 data_type='hic'
 table_name=sample_id_to_srr.txt
@@ -52,44 +51,41 @@ slots=1
 #==================================================================================================
 
 while IFS=$'\t' read -r -a line; do
-# get HIC and SRR codes
-sample_name=${line[0]}
-srrs=$(echo ${line[1]} | sed 's/,/ /g');
-#read array containing SRR
-	run_num=0
-#split_srr_array and create a job for each srr
-	for srr in $srrs; do
-		let "run_num++"
-		# Build job: parameters
-		job_name=${process}_${sample_name}_${srr}
-		job_file=$JOB_CMD/$job_name.sh
-		rm $job_file
-		m_out=$JOB_OUT
-		echo "#!/bin/bash
-		#$ -N $job_name
-		#$ -q $queue
-		#$ -l virtual_free=$memory
-		#$ -l h_rt=$max_time
-		#$ -o $m_out/${job_name}_\$JOB_ID.out
-		#$ -e $m_out/${job_name}_\$JOB_ID.err
-		#$ -j y
-		#$ -M $email
-		#$ -m abe
-		#$ -pe smp $slots" > $job_file
-		sed -i 's/^\t//g' $job_file
-
-		# download FASTQ and rename
-		job_cmd="$fastq_dump $srr --split-files -O $ODIR -DQ '+' --gzip"
-		echo $job_cmd >> $job_file
-		job_cmd="mv $ODIR/${srr}_1.fastq.gz $ODIR/${sample_name}_read1.fastq.gz_${run_num}"
-		echo $job_cmd >> $job_file
-		job_cmd="mv $ODIR/${srr}_2.fastq.gz $ODIR/${sample_name}_read2.fastq.gz_${run_num}"
-		echo $job_cmd >> $job_file
-
-		# Submit job
-		chmod a+x $job_file
-		qsub < $job_file
-		sleep 0.1
-		#cat $job_file
-	done
+  # get HIC and SRR codes
+  sample_name=${line[0]}
+  srrs=$(echo ${line[1]} | sed 's/,/ /g');
+  run_num=0
+  # Build job: parameters
+  job_name=${process}_${sample_name}_${srr}
+  job_file=$JOB_CMD/$job_name.sh
+  rm $job_file
+  m_out=$JOB_OUT
+  echo "#!/bin/bash
+  #$ -N $job_name
+  #$ -q $queue
+  #$ -l virtual_free=$memory
+  #$ -l h_rt=$max_time
+  #$ -o $m_out/${job_name}_\$JOB_ID.out
+  #$ -e $m_out/${job_name}_\$JOB_ID.err
+  #$ -j y
+  #$ -M $email
+  #$ -m abe
+  #$ -pe smp $slots" > $job_file
+  sed -i 's/^\t//g' $job_file
+  cmd1="zcat "
+  cmd2="zcat "
+  for srr in $srrs; do
+    let "run_num++"
+    cmd1="$cmd1 $ODIR/${sample_name}_read1.fastq.gz_${run_num}"
+    cmd2="$cmd2 $ODIR/${sample_name}_read2.fastq.gz_${run_num}"
+  done
+  cmd1="$cmd1 | gzip -c > $ODIR/${sample_name}_read1.fastq.gz"
+  cmd2="$cmd2 | gzip -c > $ODIR/${sample_name}_read2.fastq.gz"
+  echo $cmd1 >> $job_file
+  echo $cmd2 >> $job_file
+	# Submit job
+	chmod a+x $job_file
+	qsub < $job_file
+	sleep 0.1
+	#cat $job_file
 done <$itab

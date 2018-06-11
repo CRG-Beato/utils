@@ -4,7 +4,7 @@
 #==================================================================================================
 # Created on: 2016-01-13
 # Usage: ./parse_log_fastqc.sh
-# Author: Javier Quilez (GitHub: jaquol)
+# Authors: Javier Quilez (GitHub: jaquol), JL Villanueva (GitHub: egenomics)
 # Goal: generate quality control statistics from the FastQC log out file
 #==================================================================================================
 
@@ -15,12 +15,21 @@
 #==================================================================================================
 
 # Variables
-samples="rf_001_01_01_chipseq rf_002_01_01_chipseq rf_003_01_01_chipseq rf_004_01_01_chipseq rf_005_01_01_chipseq"
-data_type=chipseq
-release_date=2016-02-04
-project=rferrari
-analysis=2016-02-08_get_and_quality_control_fastqs
-sequencing_type="SE"
+analysis=$1
+shift
+release_date=$1
+shift
+integrate_metadata=$1
+shift
+email=$1
+shift
+data_type=$1
+shift
+project=$1
+shift
+sequencing_type=$1
+shift
+samples="$@"
 
 # paths
 if [[ $project == "4DGenome" ]]; then
@@ -29,7 +38,7 @@ if [[ $project == "4DGenome" ]]; then
 else
 	IODIR=/users/mbeato/projects/data/$data_type/raw/$release_date
 	ANALYSIS=/users/mbeato/projects/projects/$project/analysis/$analysis
-	FASTQC=/users/mbeato/projects/data/$data_type/raw/$release_date/fastqc 
+	FASTQC=/users/mbeato/projects/data/$data_type/raw/$release_date/fastqc
 fi
 mkdir -p $ANALYSIS/tables
 otab=$ANALYSIS/tables/fastq_quality_control_stats_fastqc.txt
@@ -61,7 +70,6 @@ for s in $samples; do
 		echo -e "$s\t$read1_n_seqs\t$read2_n_seqs\t$read1_p_dedup\t$read2_p_dedup" >> $otab
 	else
 		echo -e "$s\t$read1_n_seqs\t$read1_p_dedup" >> $otab
-	fi 
+	fi
 
 done
-

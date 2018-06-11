@@ -21,10 +21,10 @@
 #==================================================================================================
 
 # variables
-samples="rz_008_02_01_rnaseq"
-data_type=rnaseq
+samples="yc_001_01_01_chipseq"
+data_type=chipseq
 call_peaks_mode=
-project=rzaurin
+project=ycuartero
 
 # paths
 python=`which python`
@@ -101,7 +101,7 @@ for s in $samples; do
 	if [[ $project != "4DGenome" ]]; then
 		target_protein=`$io_metadata -m get_from_metadata -s $s -t input_metadata -a TARGET_PROTEIN`
 		target_protein_new=`echo ${target_protein,,} |sed "s/chip-//g"`
-	fi		
+	fi
 
 
 
@@ -111,7 +111,7 @@ for s in $samples; do
 
 	if [[ $data_type == "chipseq" ]]; then
 
-	
+
 		# read per per million profiles
 		echo "... preparing read per million profiles"
 
@@ -140,7 +140,7 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
-		fi	
+		fi
 
 
 		# peaks coordinates with -log10(FDR q-value)
@@ -177,8 +177,45 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
-		fi	
+		fi
 
+		# peaks coordinates for broadpeaks
+		echo "... preparing peaks coordinates with -log10(FDR q-value)"
+
+		# define paths
+		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_peaks.broadPeak
+		if [ ! -f $ifile ]; then
+		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long
+		ODIR=/users/mbeato/public-docs/$SHARED_PATH
+		mkdir -p $ODIR
+
+		# convert to bigWig
+		fname=`basename $ifile | sed "s/.broadPeak/_broad.bw/g"`
+		tbed=$ODIR/tbed.bed
+		obw=$ODIR/$fname
+		grep -v mmtv_luciferase $ifile | cut -f1-3,9 | $bedtools groupby -i stdin -g 1,2,3 -c 4 -o mean > $tbed
+		$bedgraph_to_bigwig $tbed $chrom_sizes $obw
+
+		# print track hub definitions
+		track_type=peaks_macs2_qvalues
+		composite_track=${data_type}_$track_type
+		echo -e >> $composite_track.txt
+		echo -e "\t\ttrack ${s}_$track_type" >> $composite_track.txt
+		echo -e "\t\tparent $composite_track" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long/${s}_peaks.bw" >> $composite_track.txt
+		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
+		if [[ $call_peaks_mode == "sample_alone" ]]; then
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks without control, -log10(q-value)" >> $composite_track.txt
+		elif [[ $call_peaks_mode == "with_control" ]]; then
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks, -log10(q-value)" >> $composite_track.txt
+		fi
+		echo -e "\t\ttype bigWig" >> $composite_track.txt
+		if [[ $project != "4DGenome" ]]; then
+			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		else
+			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
+		fi
+	fi
 
 		# alignments
 		echo "... alignments profiles"
@@ -209,7 +246,7 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
-		fi	
+		fi
 
 		echo
 
@@ -221,7 +258,7 @@ for s in $samples; do
 
 	elif [[ $data_type == "hichipseq" ]]; then
 
-	
+
 		# read per per million profiles
 		echo "... preparing read per million profiles"
 
@@ -252,7 +289,7 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new_no_hi} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
-		fi	
+		fi
 		#echo >> $composite_track.txt
 
 
@@ -322,7 +359,7 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
-		fi	
+		fi
 
 		echo
 
@@ -334,7 +371,7 @@ for s in $samples; do
 
 	elif [[ $data_type == "rnaseq" || $data_type == "chrrnaseq" ]]; then
 
-	
+
 		# read per per million profiles
 		echo "... preparing read per million profiles"
 
@@ -417,7 +454,7 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
-		fi	
+		fi
 
 		echo
 
@@ -429,7 +466,7 @@ for s in $samples; do
 
 	elif [[ $data_type == "atacseq" ]]; then
 
-	
+
 		# read per per million profiles
 		echo "... preparing read per million profiles"
 
@@ -458,7 +495,7 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
-		fi	
+		fi
 
 
 
@@ -468,7 +505,7 @@ for s in $samples; do
 
 	elif [[ $data_type == "dnaseseq" ]]; then
 
-	
+
 		# read per per million profiles
 		echo "... preparing read per million profiles"
 
@@ -497,7 +534,7 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new antibody=${target_protein_new,,} treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		else
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
-		fi	
+		fi
 	fi
 
 done

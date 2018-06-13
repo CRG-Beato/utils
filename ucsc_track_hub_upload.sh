@@ -179,12 +179,12 @@ for s in $samples; do
 			echo -e "\t\tsubGroups cell_line=$cell_line_new treatment_time=$treatment_time_new treatment=${treatment,,} user=$user_new" >> $composite_track.txt
 		fi
 
-		# peaks coordinates for broadpeaks
-		echo "... preparing peaks coordinates with -log10(FDR q-value)"
 
 		# define paths
 		ifile=/users/mbeato/projects/$SHARED_PATH/${s}_peaks.broadPeak
-		if [ ! -f $ifile ]; then
+		if [ -f $ifile ]; then
+		# peaks coordinates for broadpeaks
+		echo "... preparing broad peaks coordinates with -log10(FDR q-value)"
 		SHARED_PATH=data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long
 		ODIR=/users/mbeato/public-docs/$SHARED_PATH
 		mkdir -p $ODIR
@@ -202,12 +202,12 @@ for s in $samples; do
 		echo -e >> $composite_track.txt
 		echo -e "\t\ttrack ${s}_$track_type" >> $composite_track.txt
 		echo -e "\t\tparent $composite_track" >> $composite_track.txt
-		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long/${s}_peaks.bw" >> $composite_track.txt
-		echo -e "\t\tshortLabel $sample_name" >> $composite_track.txt
+		echo -e "\t\tbigDataUrl https://data:adenine&thymine@public_docs.crg.es/mbeato/public-docs/data/$data_type/samples/$s/peaks/macs2/$version/$call_peaks_mode/$sequencing_type_long/${s}_peaks_broad.bw" >> $composite_track.txt
+		echo -e "\t\tshortLabel ${sample_name}_broad" >> $composite_track.txt
 		if [[ $call_peaks_mode == "sample_alone" ]]; then
-			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks without control, -log10(q-value)" >> $composite_track.txt
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 broad peaks without control, -log10(q-value)" >> $composite_track.txt
 		elif [[ $call_peaks_mode == "with_control" ]]; then
-			echo -e "\t\tlongLabel $sample_name ($s) MACS2 peaks, -log10(q-value)" >> $composite_track.txt
+			echo -e "\t\tlongLabel $sample_name ($s) MACS2 broad peaks, -log10(q-value)" >> $composite_track.txt
 		fi
 		echo -e "\t\ttype bigWig" >> $composite_track.txt
 		if [[ $project != "4DGenome" ]]; then

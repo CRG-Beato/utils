@@ -15,8 +15,8 @@
 #==================================================================================================
 
 # variables
-analysis=2018-05-24_run_hic-16.05_2018-05-24_yannick_external
-download_date=2018-05-24
+analysis=2018-10-23_hic_2018-10-23_external
+download_date=2018-10-23
 process=fastq_dump_from_sra
 project='4DGenome'
 data_type='hic'
@@ -39,7 +39,8 @@ mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
 itab=$PROJECT/analysis/$analysis/tables/$table_name
 fastq_dump=`which fastq-dump`
-
+prefetch=`which prefetch`
+vdbvalidate=`which vdb-validate`
 # Cluster parameters
 queue=long-sl7
 memory=2G
@@ -79,7 +80,7 @@ srrs=$(echo ${line[1]} | sed 's/,/ /g');
 		sed -i 's/^\t//g' $job_file
 
 		# download FASTQ and rename
-		job_cmd="$fastq_dump $srr --split-files -O $ODIR -DQ '+' --gzip"
+		job_cmd="$prefetch --max-size 50000000 $srr && $vdbvalidate $srr && $fastq_dump $srr --split-files -O $ODIR -DQ '+' --gzip"
 		echo $job_cmd >> $job_file
 		job_cmd="mv $ODIR/${srr}_1.fastq.gz $ODIR/${sample_name}_read1.fastq.gz_${run_num}"
 		echo $job_cmd >> $job_file

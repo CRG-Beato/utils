@@ -19,33 +19,39 @@
 # CONFIGURATION VARIABLES AND PATHS
 #==================================================================================================
 
-# Variables 
+# Variables
 process="star_generate_genome1_sjdb"
-species="homo_sapiens"
-version="hg38_mmtv"
-read_length=54
-fasta_name=${version}_chr1-22XYMUn
+species="mus_musculus"
+version="mm10"
+read_length=61
+fasta_name=${version}_chr1-19XYM
+HOME=/users/mbeato/projects
 
 # Paths
 GENOME_DIR=$HOME/assemblies/$species/$version/star_genome_index/read_length_${read_length}bp
-genome_fasta=$HOME/assemblies/$species/$version/ucsc/$fasta_name.fa
-JOB_CMD=$HOME/utils/job_cmd 
+genome_fasta=$HOME/assemblies/$species/$version/ucsc/${fasta_name}.fa
+JOB_CMD=$HOME/utils/job_cmd
 JOB_OUT=$HOME/utils/job_out
 mkdir -p $GENOME_DIR
 mkdir -p $JOB_CMD
 mkdir -p $JOB_OUT
 star=`which star`
 
-# define gene annoation file based on the assembly version 
-if [[ $version == "hg19" ]]; then 
+# define gene annoation file based on the assembly version
+if [[ $version == "hg19" ]]; then
 	sjdb=$HOME/assemblies/$species/$version/gencode/gencode.v19.annotation.gtf
-elif [[ $version == "hg19_mmtv" ]]; then 
+elif [[ $version == "hg19_mmtv" ]]; then
 	sjdb=$HOME/assemblies/$species/hg19/gencode/gencode.v19.annotation.gtf
 elif [[ $version == "hg38" ]]; then
 	sjdb=$HOME/assemblies/$species/$version/gencode/gencode.v24.annotation.gtf
 elif [[ $version == "hg38_mmtv" ]]; then
 	sjdb=$HOME/assemblies/$species/hg38/gencode/gencode.v24.annotation.gtf
-fi 
+elif [[ $version == "mm10" ]]; then
+	sjdb=$HOME/assemblies/$species/mm10/gencode/gencode.vM19.annotation.gtf
+	#statements
+
+
+fi
 
 # CRG cluster parameters
 queue=long-sl7
@@ -88,5 +94,5 @@ job_cmd="$star \
 echo $job_cmd >> $job_file
 
 # Submit job
-chmod a+x $job_file 
+chmod a+x $job_file
 qsub < $job_file

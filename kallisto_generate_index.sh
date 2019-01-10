@@ -13,12 +13,12 @@
 # CONFIGURATION VARIABLES AND PATHS
 #==================================================================================================
 
-# Variables 
+# Variables
 process="kallisto_generate_index"
-species="homo_sapiens"
-version="hg38_snomirnas"
+species="mus_musculus"
+version="mm10"
 
-# Paths 
+# Paths
 if [[ $version == "hg19" ]]; then
 	transcripts_fasta=$HOME/assemblies/$species/$version/ucsc/${version}_ensGene.fa.gz
 	KALLISTO=$HOME/assemblies/$species/$version/kallisto_index
@@ -27,6 +27,10 @@ elif [[ $version == "hg38" ]]; then
 	transcripts_fasta=$HOME/assemblies/$species/$version/gencode/gencode.v24.transcripts.fa.gz
 	KALLISTO=$HOME/assemblies/$species/$version/kallisto_index
 	index=$KALLISTO/kallisto_${species}_${version}_gencode_v24.index
+elif [[ $version == "mm10" ]]; then
+	transcripts_fasta=$HOME/assemblies/$species/$version/gencode/gencode.vM19.transcripts.fa.gz
+	KALLISTO=$HOME/assemblies/$species/$version/kallisto_index
+	index=$KALLISTO/kallisto_${species}_${version}_gencode_vM19.index
 elif [[ $version == "hg38_trnas" ]]; then
 	simple_version=`echo $version |cut -f1 -d'_'`
 	transcripts_fasta=$HOME/assemblies/$species/$simple_version/ucsc/$version.fa.gz
@@ -43,7 +47,7 @@ elif [[ $version == "hg38_snomirnas" ]]; then
 	KALLISTO=$HOME/assemblies/$species/$simple_version/kallisto_index
 	index=$KALLISTO/kallisto_${species}_$version.index
 fi
-JOB_CMD=$HOME/utils/job_cmd 
+JOB_CMD=$HOME/utils/job_cmd
 JOB_OUT=$HOME/utils/job_out
 mkdir -p $KALLISTO
 mkdir -p $JOB_CMD
@@ -83,6 +87,5 @@ job_cmd="$kallisto index -i $index $transcripts_fasta --make-unique"
 echo $job_cmd >> $job_file
 
 # Submit job
-chmod a+x $job_file 
+chmod a+x $job_file
 qsub < $job_file
-

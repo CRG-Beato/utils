@@ -15,9 +15,9 @@ import time
 import pandas as pd
 
 # variables
-samples="rf_013_01_02_rnaseq rf_014_01_02_rnaseq rf_015_01_02_rnaseq rf_016_01_02_rnaseq rf_017_01_02_rnaseq rf_018_01_02_rnaseq rf_019_01_02_rnaseq rf_020_01_02_rnaseq rf_021_01_02_rnaseq rf_022_01_02_rnaseq rf_023_01_02_rnaseq rf_024_01_02_rnaseq rf_025_01_02_rnaseq"
-project = 'rferrari'
-analysis = '2016-06-01_run_rnaseq-16.04_sequencing_2016-05-30_4dgu'
+samples="fd_037_01_01_chipseq fd_038_01_01_chipseq fd_039_01_01_chipseq fd_040_01_01_chipseq fd_041_01_01_chipseq fd_042_01_01_chipseq fd_043_01_01_chipseq fd_044_01_01_chipseq"
+project = 'fledily'
+analysis = '2019-01-08_chipseq__unit'
 table = 'quality_control_raw_reads'
 
 # connect to database

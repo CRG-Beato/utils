@@ -23,6 +23,7 @@
 process="star_generate_genome1_sjdb"
 species="mus_musculus"
 version="mm10"
+$email="joseluis.villanueva@crg.es"
 read_length=61
 fasta_name=${version}_chr1-19XYM
 HOME=/users/mbeato/projects
@@ -74,7 +75,7 @@ echo "#!/bin/bash
 #$ -q $queue
 #$ -l virtual_free=$memory
 #$ -l h_rt=$max_time
-#$ -M javier.quilez@crg.eu
+#$ -M $email
 #$ -m abe
 #$ -j y
 #$ -o $m_out/${job_name}_\$JOB_ID.out
